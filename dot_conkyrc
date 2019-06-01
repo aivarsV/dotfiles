@@ -1,0 +1,58 @@
+conky.config = {
+    out_to_x = false,
+    own_window = false,
+    out_to_console = true,
+    background = false,
+    max_text_width = 0,
+
+    -- Update interval in seconds
+    update_interval = 5.0,
+
+    -- This is the number of times Conky will update before quitting.
+    -- Set to zero to run forever.
+    total_run_times = 0,
+
+    -- Shortens units to a single character (kiB->k, GiB->G, etc.). Default is off.
+    short_units = true,
+
+    -- How strict should if_up be when testing an interface for being up?
+    -- The value is one of up, link or address, to check for the interface
+    -- being solely up, being up and having link or being up, having link
+    -- and an assigned IP address. 
+    if_up_strictness = 'address',
+
+    -- Add spaces to keep things from moving about?  This only affects certain objects.
+    -- use_spacer should have an argument of left, right, or none
+    use_spacer = 'left',
+
+    -- Force UTF8? note that UTF8 support required XFT
+    override_utf8_locale = false,
+
+    -- number of cpu samples to average
+    -- set to 1 to disable averaging
+    cpu_avg_samples = 2,
+};
+
+conky.text = [[
+[
+    { "full_text": "Linux ${kernel}"},
+    { "full_text": \
+            ${if_up wlp3s0}"W:${addr wlp3s0} @ ${wireless_essid wlp3s0}"\
+            ${else}"W: down"\
+            ${endif}${if_up wlp3s0}, "color" : "\#10ff10"${endif}},
+    { "full_text": \
+            ${if_up tun0}"V:${addr tun0}"\
+            ${else}"V: down"\
+            ${endif}${if_up tun0}, "color" : "\#10ff10"${endif}},
+    { "full_text": \
+            ${if_up enp0s25}"E:${addr enp0s25}"\
+            ${else}"E: down"\
+            ${endif}${if_up enp0s25}, "color" : "\#10ff10"${endif}},
+    { "full_text": "B: ${battery_short}"\
+            ${if_match ${battery_percent} < 45} "color" : \
+               ${if_match ${battery_percent} < 15} "\#f99e16" ${else} "\#ea0c04" ${endif}${endif}},
+    { "full_text": "UP: ${uptime}"},
+    { "full_text": "${time %A %Y-%m-%d %H:%M:%S}"}
+],
+]];
+
