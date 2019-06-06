@@ -49,8 +49,8 @@ conky.text = [[
             ${else}"E: down"\
             ${endif}${if_up enp0s25}, "color" : "\#10ff10"${endif}},
     { "full_text": "B: ${battery_short}"\
-            ${if_match ${battery_percent} < 45} "color" : \
-               ${if_match ${battery_percent} < 15} "\#f99e16" ${else} "\#ea0c04" ${endif}${endif}},
+            ${if_match ${battery_percent} < 45}, "color" : \
+               ${if_match ${battery_percent} < 15} "\#ea0c04" ${else} "\#f99e16" ${endif}${endif}},
     { "full_text": "UP: ${uptime}"},
     { "full_text": "${time %A %Y-%m-%d %H:%M:%S}"}
 ],
