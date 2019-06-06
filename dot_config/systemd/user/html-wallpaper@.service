@@ -1,0 +1,9 @@
+[Unit]
+Description=Web server, delivering images
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python .scripts/web-wallpaper %i
+
+[Install]
+WantedBy=multi-user.target

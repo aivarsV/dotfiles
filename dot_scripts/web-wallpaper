@@ -1,0 +1,43 @@
+#!/usr/bin/python
+# Intended to run with python 3.x
+import http.server
+import socketserver
+import os
+import sys
+from random import choice
+from base64 import b64encode
+
+# something to consider:
+# https://stackoverflow.com/questions/40775054/capturing-sigint-using-keyboardinterrupt-exception-works-in-terminal-not-in-scr/40785230#40785230
+
+IMAGES_DIR = os.environ["WALLPAPERS_DIR"]
+PORT = int(sys.argv[1])
+HTML_PRE = b"""<head><title>Some random page title here</title>
+<style>body {background-size: cover; background-repeat: no-repeat; background-color: #161616;}</style>
+  </head><body background=data:image/png;base64,"""
+HTML_POST = b"></body></html>"
+
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+
+        fname = os.path.join(IMAGES_DIR, 
+                choice(os.listdir(IMAGES_DIR)))
+        with open(fname, "rb") as f:
+            self.wfile.write(HTML_PRE + 
+                            b64encode(f.read()) +
+                            HTML_POST)
+
+
+class Server(socketserver.TCPServer):
+    allow_reuse_address = True
+
+
+with Server(("127.0.0.1", PORT), Handler) as httpd:
+    print("serving at port", PORT)
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("Interrupted - exiting")
