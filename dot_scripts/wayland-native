@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -z ${DISPLAY+x} ]
+then
+  export X_DISPLAY=$DISPLAY
+  unset DISPLAY
+fi
+
+exec $@

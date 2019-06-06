@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# All screen control related actions are done through this script
+# this is sway wm specific
+
+# allows screensaver toggling
+SCREENSAVER_PIDFILE=/tmp/${USER}-swaylock.pid
+
+get-wallpaper() {
+  find "$WALLPAPERS_DIR" -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' | shuf -n 1
+}
+
+get-locker-theme(){
+  args=(
+    bs-hl-color 
+    inside-color 
+    inside-clear-color 
+    inside-ver-color 
+    inside-wrong-color 
+    key-hl-color 
+    ring-color 
+    ring-clear-color 
+    ring-ver-color 
+    ring-wrong-color 
+    )
+  i=0
+  for color in $(convert "$1" -resize 25% -colors ${#args[@]} -unique-colors txt:- | \
+                  sed 's/^.*#\([[:xdigit:]]\+\).*$/\1/' | grep -v '#')
+  do
+    echo "--${args[i++]} ${color}FF"
+  done
+}
+
+lock() {
+  bg_image=`get-wallpaper`
+  
+  swaylock -f -i ":$bg_image" -s fill --line-uses-ring \
+		--separator-color 00000000 \
+		--indicator-radius 70 \
+		$(get-locker-theme $bg_image)
+}
+
+start-screensaver() {
+  echo $$ >> $SCREENSAVER_PIDFILE
+
+  exec swayidle -w \
+      timeout 600 "$0 lock" \
+      timeout 660 'swaymsg "output * dpms off"' \
+      resume 'swaymsg "output * dpms on"' \
+      before-sleep "$0 lock" 
+}
+
+change-backlight() {
+  light -$(if [[ $1 == "+" ]]; then echo A; else echo U; fi) 20
+
+  notify-send -t 1000 "Backlight" "$(light)%"
+}
+
+
+#       MAIN STARTS HERE
+case "$1" in
+  "wallpaper")
+    while [[ -S "$SWAYSOCK" ]]
+    do
+      swaymsg output \* bg "$(get-wallpaper)" fill
+      for i in {0..90}
+      do
+        sleep 2
+        if [[ ! -S "$SWAYSOCK" ]]
+        then
+          exit
+        fi
+      done
+    done
+    ;;
+
+  "lock")
+    lock
+    ;;
+
+  "toggle-screensaver")
+    locker_pid=`cat $SCREENSAVER_PIDFILE`
+    ps --pid "$locker_pid" | grep swayidle && kill $locker_pid || start-screensaver
+    ;;
+
+  "+backlight"|"-backlight")
+    change-backlight ${1:0:1}
+    ;;
+
+esac
+
