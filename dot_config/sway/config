@@ -185,6 +185,17 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# Player control
+bindsym XF86AudioPlay exec mpc toggle
+bindsym XF86AudioPrev exec mpc prev
+bindsym XF86AudioNext exec mpc next
+
+# Volume controls
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute 1 toggle
+bindsym XF86AudioRaiseVolume exec ~/.scripts/audio-ctrl 0 +5%
+bindsym XF86AudioLowerVolume exec ~/.scripts/audio-ctrl 0 -5%
+
 # Screen control related
 bindsym $mod+Ctrl+l exec ~/.scripts/screen-ctrl lock
 bindsym XF86MonBrightnessUp exec ~/.scripts/screen-ctrl +backlight
