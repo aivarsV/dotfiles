@@ -1,0 +1,33 @@
+#!/bin/sh
+# Inspired by https://github.com/LukeSmithxyz/voidrice
+
+# Toggle floating dropdown terminal in i3, or start if non-existing.
+# $1 is	the script run in the terminal.
+# All other args are terminal settings.
+# Terminal names are in dropdown_* to allow easily setting i3 settings.
+
+[ -z "$1" ] && exit
+
+script=$1
+shift
+# true, if visible, false if hidden, empty, if not existing
+dd_visible=`swaymsg -t get_tree | jq "recurse(.nodes[]?,.floating_nodes[]?) | select(.app_id == \"dropdown_$script\") | .visible"`
+# swaymsg escapes directory seperator in output 
+# have no idea why though
+if [[ -z "$dd_visible" ]]
+then
+	echo "Window not detected... spawning."
+	swaymsg "exec \$term --name=dropdown_$script $@ -e $script"
+  dd_visible=false
+fi
+
+if $dd_visible
+then
+  echo "Moving to scratchpad"
+  swaymsg "[app_id=\"dropdown_$script\"] fullscreen disable"
+  swaymsg "[app_id=\"dropdown_$script\"] move scratchpad"
+else
+	echo "Dropping on workspace"
+	swaymsg "[app_id=\"dropdown_$script\"] scratchpad show"
+fi
+
