@@ -200,6 +200,8 @@ popup_during_fullscreen smart
 exec mako --padding 6 --default-timeout 5000 --layer overlay
 exec ~/.scripts/screen-ctrl wallpaper
 exec ~/.scripts/screen-ctrl toggle-screensaver
+# Because I keep it open anyways
+exec $launch-native firefox
 
 #
 # Status Bar:
