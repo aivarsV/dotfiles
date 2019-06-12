@@ -1,0 +1,38 @@
+#!/bin/bash
+# Program launcher for sway
+# intended to run in terminal
+
+
+list_executables() {
+  echo -n "$PATH" | xargs -d : -I{} -r -- find -L {} -maxdepth 1 -mindepth 1 -type f -executable -printf "%f\n" | sort -u  
+}
+
+prompt_user() {
+  list_executables | fzf --reverse --border -e --print-query --expect=ctrl-space
+}
+
+
+################################
+#   Main starts here
+################################
+
+#declare $(parse_input) >> /dev/null # reduce output in case of cancelled input
+INPUT_ARGS=(QUERY X_APP MATCH)
+
+i=0
+while read line
+do
+  eval "${INPUT_ARGS[i++]}=\"$line\""
+done <<< $(prompt_user)
+
+if [[ -z "$MATCH" ]]
+then # user cancelled, or custom command 
+  if [[ -z "$QUERY" ]]
+  then
+    exit # user cancelled
+  fi
+
+  MATCH="$QUERY"
+fi
+
+swaymsg "exec $(if [[ -z "$X_APP" ]]; then echo \$launch-native; fi) $MATCH"

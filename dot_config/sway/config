@@ -18,7 +18,7 @@ set $dropdown_launch ~/.scripts/ddspawn
 set $term $launch-native termite
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
-set $menu dmenu_path | dmenu | xargs swaymsg exec
+set $menu $term --name "app_launcher" -e ~/.scripts/fzf-launcher
 
 
 ### Input configuration
@@ -31,10 +31,11 @@ input * xkb_options caps:escape
 input * natural_scroll enabled
 
 ## Window traits
-for_window [app_id="dropdown_*"] floating enable
-for_window [app_id="dropdown_*"] sticky enable
+for_window [app_id="(app_launcher|dropdown_*)"] floating enable
+for_window [app_id="(app_launcher|dropdown_*)"] sticky enable
+for_window [app_id="app_launcher"] resize set 500 300
 for_window [app_id="dropdown_*"] resize set 700 400
-for_window [app_id="dropdown_*"] move position center
+for_window [app_id="(app_launcher|dropdown_*)"] move position center
 
 for_window [instance="GtkFileChooserDialog"] resize set 800 600
 for_window [instance="GtkFileChooserDialog"] move position center
