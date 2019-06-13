@@ -37,8 +37,8 @@ for_window [app_id="app_launcher"] resize set 500 300
 for_window [app_id="dropdown_*"] resize set 700 400
 for_window [app_id="(app_launcher|dropdown_*)"] move position center
 
-for_window [instance="GtkFileChooserDialog"] resize set 800 600
-for_window [instance="GtkFileChooserDialog"] move position center
+# Still looking for better solution for GTK file selectors
+floating_maximum_size 800 x 700
 
 ### Key bindings
 #
