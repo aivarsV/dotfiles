@@ -3,12 +3,19 @@
 # intended to run in terminal
 
 
-list_executables() {
+list_options() {
+  # open windows
+  swaymsg -t get_tree | jq 'def get_win($ws): 
+            recurse(.nodes[]?) | 
+            select(.type? == "con" and .app_id? != null ) | 
+              "ws "+ $ws + ": " + .app_id + " " + .name + " id=" + (.id | tostring); 
+          recurse(.nodes[]?) | select(.type? == "workspace") | get_win(.name)'
+  # executables, available from PATH
   echo -n "$PATH" | xargs -d : -I{} -r -- find -L {} -maxdepth 1 -mindepth 1 -type f -executable -printf "%f\n" | sort -u  
 }
 
 prompt_user() {
-  list_executables | fzf --reverse --border -e --print-query --expect=ctrl-space
+  list_options | fzf --reverse --border --tiebreak=index -e --print-query --expect=ctrl-space
 }
 
 
@@ -22,8 +29,17 @@ INPUT_ARGS=(QUERY X_APP MATCH)
 i=0
 while read line
 do
-  eval "${INPUT_ARGS[i++]}=\"$line\""
+  eval "${INPUT_ARGS[i++]}='$line'"
 done <<< $(prompt_user)
+
+# check if should focus another window
+win_id=`echo $MATCH | sed -n 's/^"ws \w\+: \w\+ .* id=\([0-9]\+\)"$/\1/p'`
+
+if [[ ! -z "$win_id" ]]
+then
+  swaymsg "[con_id = $win_id] focus"
+  exit
+fi
 
 if [[ -z "$MATCH" ]]
 then # user cancelled, or custom command 
