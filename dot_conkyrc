@@ -36,17 +36,20 @@ conky.config = {
 conky.text = [[
 [
     { "full_text": "Linux ${kernel}"},
+    { "full_text": "CPU:${acpitemp}°C"\
+      ${if_match ${acpitemp} > 75}, "color":"\#f99e16"${endif}
+        },
     { "full_text": \
-            ${if_up wlp3s0}"W:${addr wlp3s0} @ ${wireless_essid wlp3s0}"\
-            ${else}"W: down"\
+            ${if_up wlp3s0}"W:${wireless_essid wlp3s0}"\
+            ${else}"W:down"\
             ${endif}${if_up wlp3s0}, "color" : "\#10ff10"${endif}},
     { "full_text": \
-            ${if_up tun0}"V:${addr tun0}"\
-            ${else}"V: down"\
+            ${if_up tun0}"V:up"\
+            ${else}"V:down"\
             ${endif}${if_up tun0}, "color" : "\#10ff10"${endif}},
     { "full_text": \
-            ${if_up enp0s25}"E:${addr enp0s25}"\
-            ${else}"E: down"\
+            ${if_up enp0s25}"E:up"\
+            ${else}"E:down"\
             ${endif}${if_up enp0s25}, "color" : "\#10ff10"${endif}},
     { "full_text": "B: ${battery_short}"\
             ${if_match ${battery_percent} < 45}, "color" : \
