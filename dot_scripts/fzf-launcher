@@ -7,8 +7,8 @@ list_options() {
   # open windows
   swaymsg -t get_tree | jq 'def get_win($ws): 
             recurse(.nodes[]?) | 
-            select(.type? == "con" and .app_id? != null ) | 
-              "ws "+ $ws + ": " + .app_id + " " + .name + " id=" + (.id | tostring); 
+              select(.type? == "con" and ( .app_id? != null or .window_properties? != null )) | 
+              "ws "+ $ws + ": " + (if .app_id? != null then .app_id else .window_properties.instance end) + " " + .name + " id=" + (.id | tostring); 
           recurse(.nodes[]?) | select(.type? == "workspace") | get_win(.name)'
   # executables, available from PATH
   echo -n "$PATH" | xargs -d : -I{} -r -- find -L {} -maxdepth 1 -mindepth 1 -type f -executable -printf "%f\n" | sort -u  
