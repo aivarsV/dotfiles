@@ -197,6 +197,9 @@ focus_follows_mouse no
 smart_borders on
 popup_during_fullscreen smart
 
+# set GTK theme
+exec gsettings set org.gnome.desktop.interface font-name DejaVu Sans 10
+exec gsettings set org.gnome.desktop.interface gtk-theme Kogir-dark
 ### Auto started daemons
 exec mako --padding 6 --default-timeout 5000 --layer overlay
 exec ~/.scripts/screen-ctrl wallpaper
