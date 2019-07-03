@@ -29,6 +29,7 @@ input * xkb_variant apostrophe
 input * xkb_options caps:escape
 # mouse/trackpoint config
 input * natural_scroll enabled
+input * pointer_accel 0.5
 
 ## Window traits
 for_window [app_id="(app_launcher|dropdown_*)"] floating enable
