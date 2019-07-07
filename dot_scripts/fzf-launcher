@@ -33,7 +33,7 @@ do
 done <<< $(prompt_user)
 
 # check if should focus another window
-win_id=`echo $MATCH | sed -n 's/^"ws \w\+: \w\+ .* id=\([0-9]\+\)"$/\1/p'`
+win_id=`echo $MATCH | sed -n 's/^"ws \w\+: [^ ]\+ .* id=\([0-9]\+\)"$/\1/p'`
 
 if [[ ! -z "$win_id" ]]
 then
