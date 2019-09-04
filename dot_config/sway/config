@@ -194,6 +194,7 @@ bindsym XF86AudioLowerVolume exec ~/.scripts/audio-ctrl 0 -5%
 
 # Screen control related
 bindsym $mod+Ctrl+l exec ~/.scripts/screen-ctrl lock
+bindsym XF86ScreenSaver exec ~/.scripts/screen-ctrl lock
 bindsym XF86MonBrightnessUp exec ~/.scripts/screen-ctrl +backlight
 bindsym XF86MonBrightnessDown exec ~/.scripts/screen-ctrl -backlight
 
