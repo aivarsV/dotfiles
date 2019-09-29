@@ -1,0 +1,123 @@
+#!/usr/bin/python
+# Prefer Python 3.7
+
+import subprocess
+from os import path, makedirs, walk, listdir
+import sys
+import xoauthHelper
+from tempfile import NamedTemporaryFile
+
+MUTT_MAILDIRS = path.expanduser("~/.mailboxes")
+LOCAL_MAILDIR = path.expanduser("~/.mail/")
+DEFAULT_ACCOUNT = {
+        "User":"",
+        "Host":"",
+        "SSLType":"IMAPS",
+        "AuthMechs":"*"
+        }
+DEFAULT_CHANEL = {
+        "Create":"Slave",
+        "Patterns":"",
+        "Sync":"All"
+        }
+
+MAILDIR_CONTENTS = ["new", "cur", "tmp"]
+
+def getAccountData():
+    # do not check returncode - bug in gopass grep
+    p = subprocess.run(["gopass", "grep", "mbsync-"],
+                capture_output=True, encoding=sys.stdout.encoding, check=False)
+    if p.returncode != 0:
+        print("gopass grep exited with non zero", file=sys.stderr)
+        #exit()
+
+    result = []
+    accPaths = [x[:-1] for x in p.stdout.split("\n") if x.endswith(":")]
+    for ap in accPaths:
+        name = path.basename(ap)
+        cfg = {}
+        lines = subprocess.run(["gopass", "show", ap],
+                    encoding=sys.stdout.encoding, capture_output=True).stdout.split("\n")
+        for l in lines:
+            if not l.startswith("mbsync-"):
+                continue
+            words = l.split(": ")
+            cfg[words[0].replace("mbsync-", "")] = ": ".join(words[1:])
+
+        if "type: xoauth-refresh-token" in lines:
+            result.append((name, xoauthHelper.RefreshToken(cfg["User"], lines[0]), cfg))
+        else:
+            result.append((name, lines[0], cfg))
+
+    return result
+
+def getConfig():
+    result = []
+    for (name, secret, cfgDict) in getAccountData():
+        accountName = name + "-account"
+        imapStoreName = name + "-imap"
+        localStoreName = name + "-local"
+        localPath = path.join(LOCAL_MAILDIR, name)
+        if not path.exists(localPath):
+            makedirs(localPath)
+
+        result.append("IMAPAccount " + accountName)
+        result.append("Pass " + secret)
+        for (k,v) in DEFAULT_ACCOUNT.items():
+            result.append(" ".join((k, cfgDict.get(k, v))))
+        result.append("")
+
+        result.append("IMAPStore " + imapStoreName)
+        result.append("Account " + accountName)
+        result.append("")
+
+        result.append("MaildirStore " + localStoreName)
+        # trailing path delimiter makes all the difference
+        result.append("Path " + path.join(localPath, ""))
+        result.append("Inbox " + path.join(localPath, "Inbox"))
+        result.append("SubFolders Verbatim")
+        result.append("")
+
+        result.append("Channel " + name)
+        result.append("Master :{}:".format(imapStoreName))
+        result.append("Slave :{}:".format(localStoreName))
+        for (k,v) in DEFAULT_CHANEL.items():
+            result.append(" ".join((k, cfgDict.get(k, v))))
+        result.append("")
+
+    return "\n".join(result)
+
+def listMailboxes(rootDir=LOCAL_MAILDIR):
+    for r, d, f in walk(rootDir):
+        if all(map(lambda x: x in d, MAILDIR_CONTENTS)):
+            yield path.relpath(r, rootDir)
+
+
+def countNewMails(boxes):
+    result = 0
+    for b in boxes:
+        result += len(listdir(path.join(LOCAL_MAILDIR, b, "new")))
+
+    return result
+
+
+def main():
+    with NamedTemporaryFile("w") as f:
+        f.write(getConfig())
+        f.flush()
+        subprocess.run(["mbsync", "-c", f.name, "-a"])
+
+    maildirs = list(listMailboxes())
+    with open(MUTT_MAILDIRS, "w") as f:
+        f.write("set folder " + LOCAL_MAILDIR + "\n")
+        f.write("mailboxes " + " ".join(["\"+{}\"".format(x) for x in maildirs]))
+        f.write("\n")
+
+    newMails = countNewMails(maildirs)
+    if newMails > 0:
+        subprocess.run(["notify-send", "Mail sync", 
+                "You have {0} new mails".format(newMails)])
+
+
+if __name__ == '__main__':
+    main()
