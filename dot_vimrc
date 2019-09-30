@@ -1,0 +1,92 @@
+set nocompatible              " be iMproved, required
+set wildmenu
+filetype off                  " required
+
+set shell=/bin/bash
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" status bar plugin and themes
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'dikiaap/minimalist'
+Plugin 'cocopon/iceberg.vim'
+Plugin 'ajh17/spacegray.vim'
+
+" indent guides
+Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'Yggdroot/indentLine'
+
+" workspace manager plugin
+Plugin 'thaerkh/vim-workspace'
+
+" parentsys close when tiping
+Plugin 'tpope/vim-surround'
+
+" markdown preview
+"Plugin 'aivarsV/vim-markdown-preview'
+" git integration
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
+
+" autocompletion
+"Plugin 'valloric/youcompleteme'
+
+" wiki pages creation helper
+Plugin 'vimwiki/vimwiki'
+
+" address book
+Plugin 'aivarsV/complete_email.vim'
+
+" all plugins must be defined before this
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+set updatetime=100
+set relativenumber
+set number
+syntax on
+colorscheme iceberg
+set ts=2 sw=2 et
+let g:indent_guides_enable_on_vim_startup = 1
+let g:airline_theme='deus'
+let g:workspace_session_disable_on_args = 1
+let g:airline#extensions#tabline#enabled = 0
+let g:airline_powerline_fonts = 1
+
+" indentation colors
+let g:indent_guides_auto_colors=0
+hi IndentGuidesEven ctermbg=235
+hi IndentGuidesOdd ctermbg=NONE
+" Set transparent background
+hi! Normal ctermbg=NONE
+hi! EndOfBuffer ctermbg=NONE
+
+" use pandoc for mmarkdown preview
+let g:vim_markdown_preview_pandoc=1
+let g:vim_markdown_preview_use_xdg_open=1
+
+" set wiki directories
+let g:vimwiki_list = []
+" if available add project wiki as first
+if filereadable('.wiki.vim')
+    source .wiki.vim
+    execute 'normal \<CR>'
+endif
+" add private wiki entry
+let private_wiki = {}
+let private_wiki.path = '~/.notes/'
+let private_wiki.syntax = 'markdown'
+let private_wiki.ext = '.md'
+
+call add(g:vimwiki_list, private_wiki)
+
+let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+
+command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
+" Disable backups for gopass secret editing
+au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
+let g:complete_email_file=expand('~/.mail_addreses')
