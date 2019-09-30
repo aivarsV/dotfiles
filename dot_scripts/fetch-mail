@@ -109,7 +109,7 @@ def main():
 
     maildirs = list(listMailboxes())
     with open(MUTT_MAILDIRS, "w") as f:
-        f.write("set folder " + LOCAL_MAILDIR + "\n")
+        f.write("set folder = " + LOCAL_MAILDIR + "\n")
         f.write("mailboxes " + " ".join(["\"+{}\"".format(x) for x in maildirs]))
         f.write("\n")
 
