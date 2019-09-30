@@ -6,6 +6,7 @@ from os import path, makedirs, walk, listdir
 import sys
 import xoauthHelper
 from tempfile import NamedTemporaryFile
+import time
 
 MUTT_MAILDIRS = path.expanduser("~/.mailboxes")
 LOCAL_MAILDIR = path.expanduser("~/.mail/")
@@ -102,10 +103,15 @@ def countNewMails(boxes):
 
 
 def main():
-    with NamedTemporaryFile("w") as f:
+    f =  NamedTemporaryFile("w")
+    try:
         f.write(getConfig())
         f.flush()
-        subprocess.run(["mbsync", "-c", f.name, "-a"])
+        p = subprocess.Popen(["mbsync", "-c", f.name, "-a"])
+        time.sleep(1)
+    finally:
+        f.close()
+    p.wait()
 
     maildirs = list(listMailboxes())
     with open(MUTT_MAILDIRS, "w") as f:
