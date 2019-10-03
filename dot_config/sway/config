@@ -20,7 +20,7 @@ set $term $launch-native termite
 # Note: it's recommended that you pass the final command to sway
 set $menu $term --name "app_launcher" -e ~/.scripts/fzf-launcher
 # Floating windows are identified by this selector
-set $floaters "(app_launcher|dropdown_*|dashboard)"
+set $floaters "(app_launcher|dropdown_*)"
 
 
 
@@ -40,6 +40,7 @@ for_window [app_id=$floaters] sticky enable
 for_window [app_id="app_launcher"] resize set 500 300
 for_window [app_id="dropdown_*"] resize set 700 400
 for_window [app_id="dropdown_wtfutil"] resize set 1000 678
+for_window [app_id="dropdown_neomutt"] resize set 1000 678
 for_window [app_id=$floaters] move position center
 
 # Still looking for better solution for GTK file selectors
@@ -156,6 +157,9 @@ bindsym $mod+t exec $dropdown_launch $SHELL
 bindsym $mod+c exec $dropdown_launch octave-cli
 
 bindsym XF86Launch1 exec $dropdown_launch wtfutil
+
+bindsym $mod+m exec $dropdown_launch neomutt
+bindsym $mod+Shift+m exec ~/.scripts/fetch-mail
 #
 # Resizing containers:
 #
