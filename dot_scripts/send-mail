@@ -1,0 +1,107 @@
+#!/usr/bin/python
+# Prefer Python 3.7
+import subprocess
+import sys
+import os
+import re
+from uuid import uuid1
+import email
+from email import policy, message
+import imghdr
+import smtplib
+
+
+class SmtpCredentials:
+    def __init__(self, passwd, args):
+        self._passwd = passwd
+        self._use_xoauth = False
+        for a in args:
+            if a.startswith('mbsync-User: '):
+                self._username = a.split(':')[-1].strip()
+            if a.startswith('smtp-Host: '):
+                self.host = a.split(':')[-1].strip()
+
+    def logIn(self, smtp):
+        smtp.starttls()
+        if self._use_xoauth:
+            pass
+        else:
+            smtp.login(self._username, self._passwd)
+
+
+def compileMessage():
+    msg = email.message_from_file(sys.stdin, policy=policy.default)
+    sender = re.search(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', 
+                        msg['From']).group(0)
+    domain = sender.split('@')[-1]
+    
+    plainMsg = msg.get_body()
+    if isinstance(plainMsg, message.EmailMessage):
+        markdown = plainMsg.get_payload()
+    else:
+        markdown = plainMsg
+        plainMsg = msg
+
+    related = []
+    substituted = markdown
+    for m in re.finditer(r'\!\[((\s|\w)*)\]\((?!http)(.+)\)', markdown):
+        fPath = os.path.expanduser(m.group(3))
+        if os.path.isfile(fPath):
+            newId = str(uuid1()) + '@' + domain
+            related.append((fPath, newId))
+            substituted = substituted.replace(
+                        m.group(0),
+                        '![{0}](cid:{1})'.format(m.group(1), newId)
+                    )
+
+        else:
+            print('No such file:' + m.group(3))
+
+    html = subprocess.run(
+                ['pandoc', '--to', 'html', '-s', '--metadata', 'pagetitle=' + msg['Subject']],
+                input=substituted,
+                capture_output=True, encoding=sys.stdin.encoding
+            ).stdout
+
+    plainMsg.set_content(substituted)
+    plainMsg.add_alternative(html, subtype='html')
+    htmlMsg = plainMsg.get_payload()[1]
+
+    for r in related:
+        with open(r[0], 'rb') as f:
+            img_data = f.read()
+        htmlMsg.add_related(img_data, maintype='image',
+                                 subtype=imghdr.what(None, img_data),
+                                 filename=os.path.basename(r[0]),
+                                 cid=r[1],
+                                 disposition='inline')
+
+    return (msg, sender)
+
+
+def getCredentials(sender):
+    accountPath = subprocess.run(
+                ['gopass', 'grep', 'mbsync-User: ' + sender],
+                capture_output=True, encoding=sys.stdin.encoding
+                ).stdout.split('\n')[0][:-1]
+
+    lines = subprocess.run(
+                ['gopass', 'show', accountPath],
+                capture_output=True, encoding=sys.stdin.encoding
+                ).stdout.split('\n')
+
+    return SmtpCredentials(
+            xoauthHelper.RefreshToken(lines[0]) if 'type: xoauth-refresh-token' in lines else lines[0],
+            lines[1:])
+
+
+def sendMessage(msg, sender):
+    creds = getCredentials(sender)
+    with smtplib.SMTP(host=creds.host, port=587) as conn:
+        creds.logIn(conn)
+        conn.send_message(msg)
+
+
+if __name__ == '__main__':
+    sendMessage(*compileMessage())
+
