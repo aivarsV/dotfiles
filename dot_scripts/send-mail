@@ -76,6 +76,14 @@ def compileMessage():
                                  cid=r[1],
                                  disposition='inline')
 
+    for a in msg.iter_attachments():
+        if a.get_content_maintype() == 'text':
+            if a['Content-Transfer-Encoding'] != 'base64':
+                a.set_content(a.get_payload(), 
+                        subtype=a.get_content_subtype(),
+                        filename=a.get_filename(),
+                        cte='base64')
+
     return (msg, sender)
 
 

@@ -29,7 +29,6 @@ set sendmail = "${HOME}/.scripts/send-mail"
 set edit_headers
 set autoedit
 set record = ""
-set allow_8bit = no # require text/plain attachments to be base64
 
 set forward_attribution_intro = "---\n\n---- Forwarded message from %f ----"
 set forward_attribution_trailer = "---- End forwarded message ----\n\n---"
