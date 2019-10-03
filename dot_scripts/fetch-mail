@@ -14,7 +14,7 @@ DEFAULT_ACCOUNT = {
         "User":"",
         "Host":"",
         "SSLType":"IMAPS",
-        "AuthMechs":"*"
+        "AuthMechs":"LOGIN"
         }
 DEFAULT_CHANEL = {
         "Create":"Slave",
