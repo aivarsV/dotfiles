@@ -9,6 +9,8 @@ import email
 from email import policy, message
 import imghdr
 import smtplib
+import base64
+import xoauthHelper
 
 
 class SmtpCredentials:
@@ -20,11 +22,14 @@ class SmtpCredentials:
                 self._username = a.split(':')[-1].strip()
             if a.startswith('smtp-Host: '):
                 self.host = a.split(':')[-1].strip()
+            if a == 'type: xoauth-refresh-token':
+                self._use_xoauth = True
 
     def logIn(self, smtp):
         smtp.starttls()
         if self._use_xoauth:
-            pass
+            authString = 'user=%s\1auth=Bearer %s\1\1' % (self._username, self._passwd)
+            smtp.docmd('AUTH', 'XOAUTH2 ' + str(base64.b64encode(bytes(authString, 'ascii')), 'ascii'))
         else:
             smtp.login(self._username, self._passwd)
 
@@ -99,7 +104,7 @@ def getCredentials(sender):
                 ).stdout.split('\n')
 
     return SmtpCredentials(
-            xoauthHelper.RefreshToken(lines[0]) if 'type: xoauth-refresh-token' in lines else lines[0],
+            xoauthHelper.RefreshToken(sender, lines[0]) if 'type: xoauth-refresh-token' in lines else lines[0],
             lines[1:])
 
 
