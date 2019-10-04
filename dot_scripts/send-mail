@@ -49,6 +49,7 @@ def compileMessage():
 
     related = []
     substituted = markdown
+    extraSuffix = str(uuid1())
     for m in re.finditer(r'\!\[((\s|\w)*)\]\((?!http)(.+)\)', markdown):
         fPath = os.path.expanduser(m.group(3))
         if os.path.isfile(fPath):
@@ -56,7 +57,7 @@ def compileMessage():
             related.append((fPath, newId))
             substituted = substituted.replace(
                         m.group(0),
-                        '![{0}](cid:{1})'.format(m.group(1), newId)
+                        '![{0}](cid:{1})'.format(m.group(1), newId + extraSuffix)
                     )
 
         else:
@@ -66,9 +67,10 @@ def compileMessage():
                 ['pandoc', '--to', 'html', '-s', '--metadata', 'pagetitle=' + msg['Subject']],
                 input=substituted,
                 capture_output=True, encoding=sys.stdin.encoding
-            ).stdout
+            ).stdout.replace(extraSuffix, '')
 
-    plainMsg.set_content(substituted)
+
+    plainMsg.set_content(substituted.replace(extraSuffix, ''))
     plainMsg.add_alternative(html, subtype='html')
     htmlMsg = plainMsg.get_payload()[1]
 
