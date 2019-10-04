@@ -80,7 +80,7 @@ def compileMessage():
         htmlMsg.add_related(img_data, maintype='image',
                                  subtype=imghdr.what(None, img_data),
                                  filename=os.path.basename(r[0]),
-                                 cid=r[1],
+                                 cid='<{}>'.format(r[1]),
                                  disposition='inline')
 
     for a in msg.iter_attachments():
