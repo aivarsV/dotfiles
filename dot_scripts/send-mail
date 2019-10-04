@@ -11,7 +11,10 @@ import imghdr
 import smtplib
 import base64
 import xoauthHelper
+from os import path
 
+
+SIGNATURES_DIR = path.expanduser('~/.mail_signatures')
 
 class SmtpCredentials:
     def __init__(self, passwd, args):
@@ -46,6 +49,11 @@ def compileMessage():
     else:
         markdown = plainMsg
         plainMsg = msg
+
+    signatureFile = path.join(SIGNATURES_DIR, sender)
+    if path.isfile(signatureFile):
+        with open(signatureFile, 'r') as f:
+            markdown += '\n\n---\n' + f.read()
 
     related = []
     substituted = markdown
