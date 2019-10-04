@@ -145,8 +145,7 @@ def main():
         f.write("\n")
 
     newMails = countNewMails(maildirs)
-    if newMails > 0:
-        subprocess.run(["notify-send", "Mail sync", 
+    subprocess.run(["notify-send", "Mail sync", 
                 "You have {0} new mails".format(newMails)])
 
 
