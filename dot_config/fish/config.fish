@@ -5,3 +5,4 @@ if test -z "$SSH_AUTH_SOCK"
 end
 set -x GPG_TTY (tty)
 gpg-connect-agent updatestartuptty /bye >> /dev/null
+bind -M insert \cl _fzf_marker
