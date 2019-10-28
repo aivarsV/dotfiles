@@ -488,6 +488,8 @@ ifconfig eth0 down##Disable eth0 interface
 ifconfig eth0 up##Enable eth0 interface
 ifconfig eth0 {{ip_address}}##Assign IP address to eth0 interface
 ifconfig eth0##View network settings of an ethernet adapter
+imv {{source_dir}} | xargs -d "\n" rm -v ##Visually select and remove images
+imv {{source_dir}} | xargs -d "\n" {{mv_or_cp}} -v -t {{raget_dir}} ##Visually select and move or copy images
 in2csv --sheet={{sheet_name}} {{data.xlsx}}##Convert a specific sheet from an XLSX file to CSV
 in2csv {{data.dbf}} > {{data.csv}}##Convert a DBF file to a CSV file
 in2csv {{data.xls}}##Convert an XLS file to CSV
