@@ -189,6 +189,9 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# screenshot to clipboard
+bindsym --release Print exec grim -g \"$(slurp)" - | wl-copy
+
 # Player control
 bindsym XF86AudioPlay exec mpc toggle
 bindsym XF86AudioPrev exec mpc prev
