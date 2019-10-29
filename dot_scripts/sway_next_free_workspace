@@ -1,0 +1,31 @@
+#!/bin/bash
+# script for switching to next empty workspace
+# This works only with numbered wokspaces, e.g. 1, 2, 3
+
+function next-free-ws
+{
+  swaymsg -t get_tree | jq '[recurse(.nodes[]?) |
+                               select(.type == "workspace" and .name != "__i3_scratch")] | 
+                          map(if (.|length) > 0 then 
+                               {"name" : (.name | tonumber), "count":(.nodes | length)}
+                             else empty end) | 
+                          . as $ws | 
+                          [range(0; ($ws | length ))] | 
+                          map(if . +1 < $ws[.].name then
+                                . +1 
+                              else if $ws[.].count == 0 then 
+                                $ws[.].name else empty end end) | 
+                          if length > 0 then .[0] else ($ws | length | . +1 ) end'
+}
+
+case "$1" in
+  "open")
+    swaymsg "workspace $(next-free-ws)"
+    ;;
+
+  "move-active")
+    free_ws=`next-free-ws`
+    swaymsg "move window to workspace $free_ws"
+    swaymsg "workspace $free_ws"
+    ;;
+esac
