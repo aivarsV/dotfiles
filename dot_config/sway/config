@@ -34,6 +34,8 @@ input * xkb_options caps:escape
 input * natural_scroll enabled
 input * pointer_accel 0.5
 
+seat seat0 hide_cursor 1000
+
 ## Window traits
 for_window [app_id=$floaters] floating enable
 for_window [app_id=$floaters] sticky enable
