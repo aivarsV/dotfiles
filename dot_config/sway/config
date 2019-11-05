@@ -39,7 +39,7 @@ for_window [app_id=$floaters] floating enable
 for_window [app_id=$floaters] sticky enable
 for_window [app_id="app_launcher"] resize set 500 300
 for_window [app_id="dropdown_*"] resize set 700 400
-for_window [app_id="dropdown_wtfutil"] resize set 1000 678
+for_window [app_id="dropdown_tmux-dashboard"] resize set 1000 678
 for_window [app_id="dropdown_neomutt"] resize set 1000 678
 for_window [app_id=$floaters] move position center
 
@@ -160,7 +160,7 @@ bindsym $mod+t exec $dropdown_launch $SHELL
 # calculator
 bindsym $mod+c exec $dropdown_launch octave-cli
 
-bindsym XF86Launch1 exec $dropdown_launch wtfutil
+bindsym XF86Launch1 exec $dropdown_launch ~/.scripts/tmux-dashboard
 
 bindsym $mod+m exec $dropdown_launch neomutt
 bindsym $mod+Shift+m exec ~/.scripts/fetch-mail

@@ -8,7 +8,8 @@
 
 [ -z "$1" ] && exit
 
-script=$1
+scriptpath=$1
+script=`basename "$scriptpath"`
 shift
 # true, if visible, false if hidden, empty, if not existing
 dd_visible=`swaymsg -t get_tree | jq "recurse(.nodes[]?,.floating_nodes[]?) | select(.app_id == \"dropdown_$script\") | .visible"`
@@ -17,7 +18,7 @@ dd_visible=`swaymsg -t get_tree | jq "recurse(.nodes[]?,.floating_nodes[]?) | se
 if [[ -z "$dd_visible" ]]
 then
 	echo "Window not detected... spawning."
-	swaymsg "exec \$term --name=dropdown_$script $@ -e $script"
+	swaymsg "exec \$term --name=dropdown_$script -e '$scriptpath $@'"
   dd_visible=false
 fi
 

@@ -1,0 +1,51 @@
+#!/bin/bash
+PERIOD=15 # seconds
+
+function ip_addresses
+{
+  echo "Ip addresses::"
+  ip -j -f inet addr show | jq 'map(if .ifname != "lo" then 
+                                      .ifname + ":" + .addr_info[0].local 
+                                    else empty end) | .[]' | sed 's/"//g'
+}
+
+function battery_state
+{
+  echo "Battery::"
+  upower -i $(upower -e | grep BAT) | grep --color=never 'state:\|percentage:\|time to full:\|time to empty:' | sed -r 's/[ ]{2,}//g'
+}
+
+function new_emails
+{
+  echo "Mails::"
+  find .mail -path '*/new/*' | sed 's/^\.mail\/\(.*\)\/new\/.*$/\1/' | awk '{++a[$0]}END{for(l in a) print l ":"a[l]}'
+}
+
+function system
+{
+  echo "System::"
+  uptime -p | sed 's/^up /uptime:/'
+  df --output=target,used,size,pcent -H -x tmpfs -x devtmpfs | awk 'NR > 1 {print $1, ":", $2, "used of", $3, "[", $4, "]"}'
+  sensors -j | jq 'recurse(.[]?) | select(has("Core 0")?) | . as $o | 
+                  $o | keys | map(if test("Core [0-9]+") 
+                            then . + ":" + (. as $k | $o[$k] | keys | map(if test("temp[0-9]+_input") 
+                                                                          then $o[$k][.] 
+                                                                          else empty end) | .[0] | tostring 
+                                                ) + "°C" else empty end) | .[]' | sed 's/"//g'
+}
+
+function main
+{
+  for i in ip_addresses new_emails battery_state system
+  do
+    $i
+    echo
+  done
+}
+while true
+do
+  # clear the screen
+  printf '\e[1;1H\e[2J'
+  main | sed -r 's/^(.+):/\x1b[32m\1\x1b[0m:/g' | column -t -s ":" -R 1 -L
+  sleep $PERIOD
+done
