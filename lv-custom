@@ -1,0 +1,24 @@
+# copy this file to /usr/share/X11/xkb/symbols/lv-custom
+default partial alphanumeric_keys modifier_keys
+xkb_symbols "custom" {
+
+	include "lv(basic)"
+
+	name[Group1]= "Latvian (custom)";
+
+	key <AC11> {[ISO_Level3_Latch, quotedbl, apostrophe, quotedbl]};
+	key <SPCE> {[space, space, apostrophe]};
+	modifier_map Mod5 { <AC11> };
+
+	key <AE01> {[ exclam,		1,		onesuperior,		exclamdown		]};
+	key <AE02> {[ at,		2,		twosuperior,		oneeighth		]};
+	key <AE03> {[ numbersign,	3,		threesuperior,		sterling		]};
+	key <AE04> {[ dollar,		4,		EuroSign,		cent			]};
+	key <AE05> {[ percent,		5,		onehalf,		threeeighths		]};
+	key <AE06> {[ asciicircum,	6,		threequarters,		fiveeighths		]};
+	key <AE07> {[ ampersand,	7,		braceleft,		seveneighths		]};
+	key <AE08> {[ asterisk,		8,		bracketleft,		trademark		]};
+	key <AE09> {[ parenleft,	9,		bracketright,		plusminus		]};
+	key <AE10> {[ parenright,	0,		braceright,		degree			]};
+};
+

@@ -27,8 +27,8 @@ set $floaters "(app_launcher|dropdown_*)"
 ### Input configuration
 #
 ## keyboard layout
-input * xkb_layout lv
-input * xkb_variant apostrophe
+input * xkb_layout lv-custom
+#input * xkb_variant apostrophe
 input * xkb_options caps:escape
 # mouse/trackpoint config
 input * natural_scroll enabled
