@@ -5,6 +5,7 @@ set -x CLUTTER_BACKEND wayland
 set -x SDL_VIDEODRIVER wayland
 set -x GDK_BACKEND wayland
 set -x WALLPAPERS_DIR ~/Attēli/wallpapers
+set -x BROWSER firefox
 
 systemctl --user set-environment WALLPAPERS_DIR="$WALLPAPERS_DIR"
 systemctl --user start html-wallpaper@8000.service
