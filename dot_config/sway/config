@@ -216,6 +216,7 @@ default_border pixel 1
 focus_follows_mouse no
 smart_borders on
 popup_during_fullscreen smart
+font DejaVu Sans Mono 9
 
 # set GTK theme
 exec gsettings set org.gnome.desktop.interface font-name DejaVu Sans 10
