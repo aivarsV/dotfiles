@@ -9,12 +9,6 @@ function ip_addresses
                                     else empty end) | .[]' | sed 's/"//g'
 }
 
-function battery_state
-{
-  echo "Battery::"
-  upower -i $(upower -e | grep BAT) | grep --color=never 'state:\|percentage:\|time to full:\|time to empty:' | sed -r 's/[ ]{2,}//g'
-}
-
 function new_emails
 {
   echo "Mails::"
@@ -36,7 +30,7 @@ function system
 
 function main
 {
-  for i in ip_addresses new_emails battery_state system
+  for i in ip_addresses new_emails system
   do
     $i
     echo
