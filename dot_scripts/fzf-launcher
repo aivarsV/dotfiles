@@ -75,6 +75,7 @@ then
   cat >> $tmp_script << EOL
 #!$SHELL
     rm $tmp_script
+    sleep 0.5
     $MATCH
 EOL
   swaymsg "exec \$term -e $tmp_script"
