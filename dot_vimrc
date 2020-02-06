@@ -97,3 +97,5 @@ let g:complete_email_gpg_key = 'aivars.vaivods@edu.rtu.lv'
 set hlsearch
 nnoremap <silent> <Space> :nohlsearch<Cr>
 nnoremap , :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+" line numbers in folder listing
+let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
