@@ -23,24 +23,9 @@ class NasaImage(HTMLParser, LoaderBase):
         resp.raise_for_status()
         self.feed(resp.text)
         assert(self.image_link is not None)
-        self.fname = self.image_link.split('/')[-1]
-        assert current_image != self.fname
 
         if not self.image_link.startswith('https://'):
             self.image_link = domain + self.image_link
-
-    def save_image(self, savedir):
-        link = self.image_link
-
-        resp = get_url(link, stream=True, timeout=20)
-        resp.raise_for_status()
-        with open(joinpath(savedir, self.fname), 'wb') as f:
-            for chunk in resp.iter_content(chunk_size=512):
-                if chunk:
-                    f.write(chunk)
-
-        return self.fname
-
 
     def handle_starttag(self, tag, attrs):
         if self.image_link is None:
@@ -58,6 +43,36 @@ class NasaImage(HTMLParser, LoaderBase):
             if tag.lower() == 'a':
                 self.hrefs.pop()
 
+class BiggeekdadImage(HTMLParser, LoaderBase):
+    def __init__(self, current_image):
+        super().__init__()
+        self.figures = []
+        self.image_link = None
+
+        resp = get_url('https://biggeekdad.com/photo-of-the-day/', timeout=20,
+                        headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0'})
+        resp.raise_for_status()
+        self.feed(resp.text)
+        assert(self.image_link is not None)
+
+
+    def handle_starttag(self, tag, attrs):
+        if self.image_link is None:
+            if tag == 'figure':
+                self.figures.append(tag)
+
+            elif tag == 'img':
+                if len(self.figures) > 0:
+                    for attr, val in attrs:
+                        if attr == 'src':
+                            self.image_link = val
+                            break
+
+    def handle_endtag(self, tag):
+        if self.image_link is None:
+            if tag.lower() == 'figure':
+                self.figures.pop()
+
 
 def main():
     # get current image, if any
@@ -74,7 +89,18 @@ def main():
     with TemporaryDirectory() as d:
         for l in loaders:
             try:
-                new = l(current).save_image(d)
+                link = l(current).image_link
+                fname = link.split('/')[-1]
+                assert current != fname
+
+                resp = get_url(link, stream=True, timeout=20)
+                resp.raise_for_status()
+                with open(joinpath(d, fname), 'wb') as f:
+                    for chunk in resp.iter_content(chunk_size=512):
+                        if chunk:
+                            f.write(chunk)
+
+                new = fname
                 break
             except Exception as e:
                 print(e)
