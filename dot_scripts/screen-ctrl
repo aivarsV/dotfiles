@@ -14,14 +14,14 @@ get-locker-theme(){
   args=(
     bs-hl-color 
     inside-color 
-    inside-clear-color 
-    inside-ver-color 
-    inside-wrong-color 
-    key-hl-color 
+    inside-clear-color
+    inside-ver-color
+    inside-wrong-color
+    key-hl-color
     ring-color 
-    ring-clear-color 
-    ring-ver-color 
-    ring-wrong-color 
+    ring-clear-color
+    ring-ver-color
+    ring-wrong-color
     )
   i=0
   for color in $(convert "$1" -resize 25% -colors ${#args[@]} -unique-colors txt:- | \
@@ -60,18 +60,8 @@ change-backlight() {
 #       MAIN STARTS HERE
 case "$1" in
   "wallpaper")
-    while [[ -S "$SWAYSOCK" ]]
-    do
-      swaymsg output \* bg "$(get-wallpaper)" fill
-      for i in {0..90}
-      do
-        sleep 2
-        if [[ ! -S "$SWAYSOCK" ]]
-        then
-          exit
-        fi
-      done
-    done
+    wpaper=`get-wallpaper`
+    swaymsg output \* bg "$wpaper" fit "$(convert $wpaper  -resize 25% -colors 2 -unique-colors txt:- | sed -n -E -e '2s/^.*(#[[:xdigit:]]{6}).*$/\1/p')"
     ;;
 
   "lock")
