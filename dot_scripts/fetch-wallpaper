@@ -73,6 +73,42 @@ class DonttakepicturesImage(HTMLParser, LoaderBase):
                 self.noscripts.pop()
 
 
+class SmithsonianImage(HTMLParser, LoaderBase):
+    def __init__(self, current_image):
+        super().__init__()
+        self.divs = []
+        self.image_link = None
+
+        resp = get_url('https://www.smithsonianmag.com/photocontest/photo-of-the-day/', timeout=20)
+        resp.raise_for_status()
+        self.feed(resp.text)
+        assert(self.image_link is not None)
+
+
+    def handle_starttag(self, tag, attrs):
+        if self.image_link is None:
+            if tag == 'div':
+                self.divs.append(attrs)
+
+            elif tag == 'img':
+                tag_found = False
+                if len(self.divs) > 0:
+                    for a, v in self.divs[-1]:
+                        if a == 'class' and v == 'slideshow-wrap':
+                            tag_found = True
+                            break
+                    if tag_found:
+                        for attr, val in attrs:
+                            if attr == 'src':
+                                self.image_link = val
+                                break
+
+    def handle_endtag(self, tag):
+        if self.image_link is None:
+            if tag.lower() == 'div':
+                self.divs.pop()
+
+
 class BiggeekdadImage(HTMLParser, LoaderBase):
     def __init__(self, current_image):
         super().__init__()
