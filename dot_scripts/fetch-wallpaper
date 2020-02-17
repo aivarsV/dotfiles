@@ -1,0 +1,94 @@
+#!/usr/bin/python
+
+from requests import get as get_url
+from html.parser import HTMLParser
+from tempfile import TemporaryDirectory
+from os.path import join as joinpath
+from os.path import dirname
+from os import listdir, getenv, remove
+from random import shuffle
+from subprocess import run
+from sys import argv
+
+class LoaderBase(object): pass
+
+class NasaImage(HTMLParser, LoaderBase):
+    def __init__(self, current_image):
+        super().__init__()
+        self.hrefs = []
+        self.image_link = None
+
+        domain = 'https://apod.nasa.gov/'
+        resp = get_url(domain + 'apod/astropix.html', timeout=20)
+        resp.raise_for_status()
+        self.feed(resp.text)
+        assert(self.image_link is not None)
+        self.fname = self.image_link.split('/')[-1]
+        assert current_image != self.fname
+
+        if not self.image_link.startswith('https://'):
+            self.image_link = domain + self.image_link
+
+    def save_image(self, savedir):
+        link = self.image_link
+
+        resp = get_url(link, stream=True, timeout=20)
+        resp.raise_for_status()
+        with open(joinpath(savedir, self.fname), 'wb') as f:
+            for chunk in resp.iter_content(chunk_size=512):
+                if chunk:
+                    f.write(chunk)
+
+        return self.fname
+
+
+    def handle_starttag(self, tag, attrs):
+        if self.image_link is None:
+            if tag == 'a':
+                for attr, val in attrs:
+                    if attr == 'href':
+                        self.hrefs.append(val)
+                        break
+
+            elif tag == 'img':
+                self.image_link = self.hrefs.pop()
+
+    def handle_endtag(self, tag):
+        if self.image_link is None:
+            if tag.lower() == 'a':
+                self.hrefs.pop()
+
+
+def main():
+    # get current image, if any
+    wallsdir = getenv('WALLPAPERS_DIR')
+    current = listdir(wallsdir)
+    if len(current) == 0:
+        current = ''
+    else:
+        current = current[0]
+    # select source and try to download new image
+    loaders = LoaderBase.__subclasses__()
+    shuffle(loaders)
+    new = None
+    with TemporaryDirectory() as d:
+        for l in loaders:
+            try:
+                new = l(current).save_image(d)
+                break
+            except Exception as e:
+                print(e)
+    # if success, copy to home, remove current and update wallpaper
+        if new is not None:
+            print('Got new image:', new)
+            run(['convert', '-resize', '1920x1080', joinpath(d, new), joinpath(wallsdir, new)])
+
+    if new is not None:
+        if current != '':
+            remove(joinpath(wallsdir, current))
+        changer = joinpath(dirname(argv[0]), 'screen-ctrl')
+        run([changer, 'wallpaper'])
+
+
+if __name__ == '__main__':
+    main()
