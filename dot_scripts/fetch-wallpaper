@@ -108,6 +108,31 @@ class SmithsonianImage(HTMLParser, LoaderBase):
             if tag.lower() == 'div':
                 self.divs.pop()
 
+class Pobble365Image(HTMLParser, LoaderBase):
+    def __init__(self, current_image):
+        super().__init__()
+        self.image_link = None
+
+        resp = get_url('https://www.pobble365.com/', timeout=20)
+        resp.raise_for_status()
+        self.feed(resp.text)
+        assert(self.image_link is not None)
+
+    def handle_starttag(self, tag, attrs):
+        if self.image_link is None:
+            if tag == 'img':
+                src = None
+                tag_found = False
+                for attr, val in attrs:
+                    if attr == 'class' and val == 'full-screen__picture':
+                        tag_found = True
+                    if attr == 'src':
+                        src = val
+                if tag_found:
+                    self.image_link = src
+
+    def handle_endtag(self, tag):
+        pass
 
 class BiggeekdadImage(HTMLParser, LoaderBase):
     def __init__(self, current_image):
