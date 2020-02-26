@@ -1,0 +1,7 @@
+[Unit]
+Description=Scrape wallpapers from web services
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python .scripts/fetch-wallpaper
+

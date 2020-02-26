@@ -1,0 +1,9 @@
+[Unit]
+Description=Scrape wallpapers from web services
+
+[Timer]
+OnUnitActiveSec=30min
+OnActiveSec=30min
+
+[Install]
+WantedBy=basic.target
