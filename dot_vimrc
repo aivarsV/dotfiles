@@ -27,17 +27,9 @@ Plugin 'thaerkh/vim-workspace'
 " parentsys close when tiping
 Plugin 'tpope/vim-surround'
 
-" markdown preview
-"Plugin 'aivarsV/vim-markdown-preview'
 " git integration
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
-
-" autocompletion
-"Plugin 'valloric/youcompleteme'
-
-" wiki pages creation helper
-Plugin 'vimwiki/vimwiki'
 
 " address book
 Plugin 'aivarsV/complete_email.vim'
@@ -79,15 +71,6 @@ if filereadable('.wiki.vim')
     source .wiki.vim
     execute 'normal \<CR>'
 endif
-" add private wiki entry
-let private_wiki = {}
-let private_wiki.path = '~/.notes/'
-let private_wiki.syntax = 'markdown'
-let private_wiki.ext = '.md'
-
-call add(g:vimwiki_list, private_wiki)
-
-let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 
 command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
 " Disable backups for gopass secret editing
