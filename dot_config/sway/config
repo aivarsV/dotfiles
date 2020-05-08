@@ -229,6 +229,7 @@ exec ~/.scripts/screen-ctrl toggle-screensaver
 exec $launch-native firefox
 exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
 exec systemctl --user start fetch-wallpaper.timer
+exec redshift
 
 #
 # Status Bar:
