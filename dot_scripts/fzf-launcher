@@ -13,13 +13,13 @@ list_tmux_sessions() {
 }
 list_options() {
   # open windows
-  swaymsg -t get_tree | jq 'def get_win($ws):
-            recurse(.nodes[]?) |
-              select(.type? == "con" and ( .app_id? != null or .window_properties? != null )) |
-              "ws "+ $ws + ": " + (if .app_id? != null then .app_id else .window_properties.instance end) + " " + .name + " id=" + (.id | tostring);
+  swaymsg -t get_tree | jq 'def get_win($ws): 
+            recurse(.nodes[]?) | 
+              select(.type? == "con" and ( .app_id? != null or .window_properties? != null )) | 
+              "ws "+ $ws + ": " + (if .app_id? != null then .app_id else .window_properties.instance end) + " " + .name + " id=" + (.id | tostring); 
           recurse(.nodes[]?) | select(.type? == "workspace") | get_win(.name)'
   # executables, available from PATH
-  echo -n "$PATH" | xargs -d : -I{} -r -- find -L {} -maxdepth 1 -mindepth 1 -type f -executable -printf "%f\n" | sort -u
+  echo -n "$PATH" | xargs -d : -I{} -r -- find -L {} -maxdepth 1 -mindepth 1 -type f -executable -printf "%f\n" | sort -u  
   # tmux sessions
   list_tmux_sessions | sort -u
 }
@@ -52,7 +52,7 @@ then
 fi
 
 if [[ -z "$MATCH" ]]
-then # user cancelled, or custom command
+then # user cancelled, or custom command 
   if [[ -z "$QUERY" ]]
   then
     exit # user cancelled
