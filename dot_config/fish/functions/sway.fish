@@ -13,4 +13,5 @@ systemctl --user start html-wallpaper@8000.service
 /usr/bin/sway
 
 systemctl --user stop html-wallpaper@8000.service
+systemctl --user stop fetch-wallpaper.timer
 end

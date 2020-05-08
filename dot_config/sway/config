@@ -227,6 +227,8 @@ exec ~/.scripts/screen-ctrl wallpaper
 exec ~/.scripts/screen-ctrl toggle-screensaver
 # Because I keep it open anyways
 exec $launch-native firefox
+exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
+exec systemctl --user start fetch-wallpaper.timer
 
 #
 # Status Bar:
