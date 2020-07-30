@@ -19,10 +19,13 @@ bind-key D pb-download
 bind-key U show-urls
 bind-key x pb-delete
 
-color listnormal color241 default
+color listnormal color244 default
 color listfocus black yellow standout bold
 color listnormal_unread color249 default
 color listfocus_unread yellow default bold
 color info red black bold
-color article cyan default
 
+browser "w3m %u"
+confirm-exit yes
+keep-articles-days 365
+articlelist-format "%4i %f %D  %?T?|%-17T|?%t"
