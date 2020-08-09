@@ -2,6 +2,9 @@
 Description=Scrape wallpapers from web services
 
 [Service]
-Type=simple
-ExecStart=/usr/bin/python .scripts/fetch-wallpaper
+Type=oneshot
+ExecStart=/usr/bin/unsplash-wallpaper -r -d Attēli/wallpapers/ -h 1080 -w 1920
+ExecStartPost=/usr/bin/find Attēli/wallpapers/ -type f ! -mmin -5 -delete -print
+ExecStartPost=/usr/bin/bash /home/%u/.scripts/screen-ctrl wallpaper
+
 
