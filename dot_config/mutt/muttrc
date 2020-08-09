@@ -29,6 +29,7 @@ set sendmail = "${HOME}/.scripts/send-mail"
 set edit_headers
 set autoedit
 set record = ""
+set pager_stop      # stop at the end of current message
 
 set forward_attribution_intro = "---\n\n---- Forwarded message from %f ----"
 set forward_attribution_trailer = "---- End forwarded message ----\n\n---"
