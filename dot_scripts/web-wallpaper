@@ -11,7 +11,7 @@ import threading
 # something to consider:
 # https://stackoverflow.com/questions/40775054/capturing-sigint-using-keyboardinterrupt-exception-works-in-terminal-not-in-scr/40785230#40785230
 
-IMAGES_DIR = os.environ["WALLPAPERS_DIR"]
+IMAGE = os.environ["WALLPAPER_FILE"]
 PORT = int(sys.argv[1])
 HTML_PRE = b"""<head><title>Some random page title here</title>
 <style>body {background-size: cover; background-repeat: no-repeat; background-color: #161616;}</style>
@@ -24,9 +24,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
-        fname = os.path.join(IMAGES_DIR, 
-                choice(os.listdir(IMAGES_DIR)))
-        with open(fname, "rb") as f:
+        with open(IMAGE, "rb") as f:
             self.wfile.write(HTML_PRE + 
                             b64encode(f.read()) +
                             HTML_POST)

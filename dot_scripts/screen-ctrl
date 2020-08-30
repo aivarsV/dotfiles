@@ -7,7 +7,8 @@
 SCREENSAVER_PIDFILE=/tmp/${USER}-swaylock.pid
 
 get-wallpaper() {
-  find "$WALLPAPERS_DIR" -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' | shuf -n 1
+  #find "$WALLPAPERS_DIR" -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' | shuf -n 1
+  printf "${WALLPAPER_FILE}"
 }
 
 get-locker-theme(){

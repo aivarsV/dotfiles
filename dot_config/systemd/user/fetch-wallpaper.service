@@ -1,10 +1,10 @@
 [Unit]
-Description=Scrape wallpapers from web services
+Description=Download random wallpaper from unsplash.com
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/unsplash-wallpaper -r -d Attēli/wallpapers/ -h 1080 -w 1920
-ExecStartPost=/usr/bin/find Attēli/wallpapers/ -type f ! -mmin -5 -delete -print
+ExecStart=/usr/bin/curl -L -X GET -G https://source.unsplash.com/random -d 'orientation=landscape' --output '${WALLPAPER_FILE}_'
+ExecStartPost=/usr/bin/mv '${WALLPAPER_FILE}_' '${WALLPAPER_FILE}'
 ExecStartPost=/usr/bin/bash /home/%u/.scripts/screen-ctrl wallpaper
 
 
