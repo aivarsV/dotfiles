@@ -40,6 +40,7 @@ filetype plugin indent on    " required
 
 set updatetime=100
 set relativenumber
+set scrolloff=1
 set number
 syntax on
 colorscheme iceberg
