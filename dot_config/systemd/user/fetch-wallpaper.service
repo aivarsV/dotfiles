@@ -3,7 +3,7 @@ Description=Download random wallpaper from unsplash.com
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/curl -L -X GET -G https://source.unsplash.com/random -d 'orientation=landscape' --output '${WALLPAPER_FILE}_'
+ExecStart=/usr/bin/curl -L -X GET -G https://source.unsplash.com/random --output '${WALLPAPER_FILE}_'
 ExecStartPost=/usr/bin/mv '${WALLPAPER_FILE}_' '${WALLPAPER_FILE}'
 ExecStartPost=/usr/bin/bash /home/%u/.scripts/screen-ctrl wallpaper
 
