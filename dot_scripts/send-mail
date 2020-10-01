@@ -108,10 +108,12 @@ def getCredentials(sender):
                 capture_output=True, encoding=sys.stdin.encoding
                 ).stdout.split('\n')[0][:-1]
 
-    lines = subprocess.run(
+    credential_results = subprocess.run(
                 ['gopass', 'show', accountPath],
                 capture_output=True, encoding=sys.stdin.encoding
-                ).stdout.split('\n')
+                )
+    assert credential_results.returncode == 0, f'Have you forgot to set correct sender? Currently: <{sender}>'
+    lines = credential_results.stdout.split('\n')
 
     return SmtpCredentials(
             xoauthHelper.RefreshToken(sender, lines[0]) if 'type: xoauth-refresh-token' in lines else lines[0],
