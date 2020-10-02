@@ -106,7 +106,7 @@ def getCredentials(sender):
     accountPath = subprocess.run(
                 ['gopass', 'grep', 'mbsync-User: ' + sender],
                 capture_output=True, encoding=sys.stdin.encoding
-                ).stdout.split('\n')[0][:-1]
+                ).stdout.split('\n')[0][:-len(' matches')]
 
     credential_results = subprocess.run(
                 ['gopass', 'show', accountPath],
