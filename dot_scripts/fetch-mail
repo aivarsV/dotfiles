@@ -58,7 +58,7 @@ def getAccountData():
         #exit()
 
     result = []
-    accPaths = [x[:-1] for x in p.stdout.split("\n") if x.endswith(":")]
+    accPaths = [x[:-8] for x in p.stdout.split("\n") if x.endswith(" matches")]
     for ap in accPaths:
         name = path.basename(ap)
         cfg = {}
