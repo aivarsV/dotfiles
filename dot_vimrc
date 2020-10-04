@@ -38,6 +38,8 @@ Plugin 'aivarsV/complete_email.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+set rtp+=~/.vim/runtime
+
 set updatetime=100
 set relativenumber
 set scrolloff=1
