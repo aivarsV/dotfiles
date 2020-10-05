@@ -252,6 +252,6 @@ function! fzf_vim#buffers(...)
   return s:fzf('buffers', {
   \ 'source':  map(fzf_vim#_buflisted_sorted(), 'fzf_vim#_format_buffer(v:val)'),
   \ 'sink*':   s:function('s:bufopen'),
-  \ 'options': ['+m', '-x', '--tiebreak=index', '--ansi', '-d', '\t', '--with-nth', '3..', '-n', '2,1..2', '--prompt', 'Buf> ', '--query', query, '--bind', 'tab:down', '--bind', 'btab:up', '--cycle']
+  \ 'options': ['+m', '-x', '--tiebreak=index', '--ansi', '-d', '\t', '--with-nth', '3..', '-n', '2,1..2', '--prompt', 'Buf> ', '--query', query, '--bind', 'tab:up', '--bind', 'btab:down', '--cycle']
   \}, args)
 endfunction
