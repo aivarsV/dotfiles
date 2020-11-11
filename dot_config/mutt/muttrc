@@ -4,6 +4,7 @@ set sleep_time = 0		# Pause 0 seconds for informational messages
 set markers = no		# Disables the `+` displayed at line wraps
 set mark_old = no		# Unread mail stay unread until read
 set wait_key = no		# mutt won't ask "press key to continue"
+set abort_key = "<Esc>"
 auto_view text/html		
 alternative_order text/plain text/html
 
@@ -39,7 +40,7 @@ set attribution = "\n ---\n\nOn %d, %n wrote:\n"
 
 # Sidebar mappings
 set sidebar_visible = yes
-set sidebar_width = 40
+set sidebar_width = 20
 set sidebar_next_new_wrap = yes
 set mail_check_stats
 set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
