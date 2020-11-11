@@ -1,3 +1,4 @@
+set folder = ~/.mail/
 set sort = 'reverse-date'
 set sleep_time = 0		# Pause 0 seconds for informational messages
 set markers = no		# Disables the `+` displayed at line wraps
@@ -14,9 +15,10 @@ set date_format = "%y/%m/%d %H:%M"
 set index_format="%2C %zs %?X?A& ? %D %-15.15F %s (%-4.4c)"
 
 source /usr/share/doc/neomutt/vim-keys/vim-keys.rc
-bind index <Return> display-message
 set mbox_type = Maildir
-source ~/.mailboxes
+set virtual_spoolfile=yes
+# user specific mailboxes and alternates(my email addresses)
+source ~/.config/mutt/personal
 
 # Compose and send settings
 set fast_reply			# skip to compose when replying
@@ -40,13 +42,19 @@ set sidebar_visible = yes
 set sidebar_width = 40
 set sidebar_next_new_wrap = yes
 set mail_check_stats
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N/? %?S?%S?'
+set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
 bind index,pager \Ck sidebar-prev
 bind index,pager \Cj sidebar-next
 bind index,pager \Co sidebar-open
 bind index,pager \Cp sidebar-prev-new
 bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
+
+set pager_index_lines=5
+macro index \Cf "<vfolder-from-query>" "Search mailbox"
+bind index,pager T modify-labels
+# remove unread tag when opening new message
+macro index <Return> "<modify-labels>-unread\nk<display-message>" "Show message"
 
 # Default index colors:
 color index yellow default '.*'

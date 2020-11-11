@@ -8,7 +8,6 @@ import xoauthHelper
 from tempfile import NamedTemporaryFile
 import time
 
-MUTT_MAILDIRS = path.expanduser("~/.mailboxes")
 LOCAL_MAILDIR = path.expanduser("~/.mail/")
 DEFAULT_ACCOUNT = {
         "User":"",
@@ -22,37 +21,9 @@ DEFAULT_CHANEL = {
         "Sync":"All"
         }
 
-MAILDIR_CONTENTS = ["new", "cur", "tmp"]
-
-
-class SortableMaildirPath(str):
-    def __lt__(self, other):
-        if self.lower().endswith('inbox'):
-            if not other.lower().endswith('inbox'):
-                return True
-        elif other.lower().endswith('inbox'):
-            return False
-        return str.__lt__(self, other)
-
-    def __gt__(self, other):
-        if not self.lower().endswith('inbox'):
-            if other.lower().endswith('inbox'):
-                return True
-        elif not other.lower().endswith('inbox'):
-            return False
-        return str.__gt__(self, other)
-    def __le__(self, other):
-        return self.__lt__(other) or self.__eq__(other)
-    def __ge__(self, other):
-        return self.__gt__(other) or self.__eq__(other)
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-
 def getAccountData():
-    # do not check returncode - bug in gopass grep
     p = subprocess.run(["gopass", "grep", "mbsync-"],
-                capture_output=True, encoding=sys.stdout.encoding, check=False)
+                capture_output=True, encoding=sys.stdout.encoding)
     if p.returncode != 0:
         print("gopass grep exited with non zero", file=sys.stderr)
         #exit()
@@ -113,20 +84,6 @@ def getConfig():
 
     return "\n".join(result)
 
-def listMailboxes(rootDir=LOCAL_MAILDIR):
-    for r, d, f in walk(rootDir):
-        if all(map(lambda x: x in d, MAILDIR_CONTENTS)):
-            yield SortableMaildirPath(path.relpath(r, rootDir))
-
-
-def countNewMails(boxes):
-    result = 0
-    for b in boxes:
-        result += len(listdir(path.join(LOCAL_MAILDIR, b, "new")))
-
-    return result
-
-
 def main():
     f =  NamedTemporaryFile("w")
     try:
@@ -138,15 +95,14 @@ def main():
         f.close()
     p.wait()
 
-    maildirs = sorted(listMailboxes())
-    with open(MUTT_MAILDIRS, "w") as f:
-        f.write("set folder = " + LOCAL_MAILDIR + "\n")
-        f.write("mailboxes " + " ".join(["\"+{}\"".format(x) for x in maildirs]))
-        f.write("\n")
+    p = subprocess.run(["notmuch", "new"])
 
-    newMails = countNewMails(maildirs)
+    newMails = subprocess.run(["notmuch", "count", "tag:unread and tag:inbox"],
+                              encoding=sys.stdout.encoding,
+                              capture_output=True).stdout.strip()
+
     subprocess.run(["notify-send", "Mail sync", 
-                "You have {0} new mails".format(newMails)])
+                "You have {0} unread mails".format(newMails)])
 
 
 if __name__ == '__main__':

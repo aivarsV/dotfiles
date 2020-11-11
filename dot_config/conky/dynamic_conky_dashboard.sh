@@ -28,9 +28,6 @@ done
 
 echo ""
 echo "${1}----Mails----"
-maildir=`sed -r '1,1s/^[^=]* = //1;2,$d' ~/.mailboxes`
-sed -r '1d; 2s/^mailboxes "\+(.*)"$/\1/; s/" "\+/\n/g' ~/.mailboxes | while IFS='' read -r box
-do
-  echo -n "${2}`echo ${box} | sed -r 's|^([^/]*).*/([^/]*)$|\1/\2|'`: "
-  echo "\${color}\${unseen_mails ${maildir}${box}}"
-done
+
+sed -r '/^virtual-mailboxes/!d; s/^.*\s+"(.*)"\s+"notmuch:\/\/\?query=(.*)"/'"${2}"'\1: ${color}${execi 15 "notmuch count tag:unread and \2"}/' .config/mutt/personal
+
