@@ -1,2 +1,3 @@
 text/html; pandoc --from html --to markdown; copiousoutput;
 application/pdf; zathura %s;
+image/*; imv %s;
