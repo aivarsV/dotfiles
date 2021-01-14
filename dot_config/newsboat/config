@@ -1,5 +1,8 @@
 auto-reload yes
 
+unbind-key ^D
+unbind-key Q
+
 bind-key j down
 bind-key k up
 bind-key j next articlelist
