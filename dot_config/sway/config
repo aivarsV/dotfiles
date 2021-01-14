@@ -41,8 +41,8 @@ for_window [app_id=$floaters] floating enable
 for_window [app_id=$floaters] sticky enable
 for_window [app_id="app_launcher"] resize set 500 300
 for_window [app_id="dropdown_*"] resize set 700 400
-for_window [app_id="dropdown_tmux-dashboard"] resize set 1000 678
-for_window [app_id="dropdown_neomutt"] resize set 1000 678
+for_window [app_id="dropdown_tmux-dashboard"] resize set 1000 664
+for_window [app_id="dropdown_neomutt"] resize set 1000 666
 for_window [app_id=$floaters] move position center
 
 ## Firefox camera/mic icon
