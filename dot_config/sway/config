@@ -171,6 +171,11 @@ bindsym XF86Launch1 exec $dropdown_launch ~/.scripts/tmux-dashboard
 
 bindsym $mod+m exec $dropdown_launch neomutt
 bindsym $mod+Shift+m exec ~/.scripts/fetch-mail
+
+# keys that are still not bound to any functions
+    #state 0x0, keycode 220 (keysym 0x1008ff8f, XF86WebCam), same_screen YES,
+    #state 0x0, keycode 235 (keysym 0x1008ff59, XF86Display), same_screen YES,
+bindsym $mod+Shift+b exec $dropdown_launch ~/.backup_home.sh
 #
 # Resizing containers:
 #
