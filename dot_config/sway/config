@@ -46,9 +46,9 @@ for_window [app_id="dropdown_neomutt"] resize set 1000 666
 for_window [app_id=$floaters] move position center
 
 ## Firefox camera/mic icon
-for_window [title="Firefox - Sharing Indicator"] floating enable
-for_window [title="Firefox - Sharing Indicator"] move position 0 720
-no_focus [title="Firefox - Sharing Indicator"] 
+for_window [title="Firefox — Sharing Indicator"] floating enable
+for_window [title="Firefox — Sharing Indicator"] move position 0 720
+no_focus [title="Firefox — Sharing Indicator"] 
 
 # Still looking for better solution for GTK file selectors
 floating_maximum_size 1300 x 700
@@ -174,6 +174,7 @@ bindsym $mod+Shift+m exec ~/.scripts/fetch-mail
 
 # keys that are still not bound to any functions
     #state 0x0, keycode 220 (keysym 0x1008ff8f, XF86WebCam), same_screen YES,
+bindsym XF86WebCam exec ~/.scripts/signal-desktop
     #state 0x0, keycode 235 (keysym 0x1008ff59, XF86Display), same_screen YES,
 bindsym $mod+Shift+b exec $dropdown_launch ~/.backup_home.sh
 #
@@ -212,8 +213,8 @@ bindsym XF86AudioNext exec mpc next
 # Volume controls
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
 bindsym XF86AudioMicMute exec pactl set-source-mute 1 toggle
-bindsym XF86AudioRaiseVolume exec ~/.scripts/audio-ctrl 0 +5%
-bindsym XF86AudioLowerVolume exec ~/.scripts/audio-ctrl 0 -5%
+bindsym XF86AudioRaiseVolume exec ~/.scripts/audio-ctrl +5%
+bindsym XF86AudioLowerVolume exec ~/.scripts/audio-ctrl -5%
 
 # Screen control related
 bindsym $mod+Ctrl+l exec ~/.scripts/screen-ctrl lock
