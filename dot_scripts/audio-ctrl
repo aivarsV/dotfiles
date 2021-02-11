@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pactl set-sink-volume ${@}
+pactl set-sink-volume $(pactl list sinks | grep Sink | sed -e 's/Sink #//') ${@}
 # I have only one soundcard, so this works for me
 notify-send -t 500 "Audio volume" \
       $(pactl list sinks | sed -n 's/^.*front-left:.* \([0-9]\+%\).\+/\1/p')
