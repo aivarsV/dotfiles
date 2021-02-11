@@ -13,9 +13,7 @@ call vundle#begin()
 " status bar plugin and themes
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'dikiaap/minimalist'
-Plugin 'cocopon/iceberg.vim'
-Plugin 'ajh17/spacegray.vim'
+Plugin 'danilo-augusto/vim-afterglow.git'
 
 " indent guides
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -45,7 +43,9 @@ set relativenumber
 set scrolloff=1
 set number
 syntax on
-colorscheme iceberg
+let g:afterglow_inherit_background=1
+let g:afterglow_use_italics=0
+colorscheme afterglow
 set ts=2 sw=2 et
 let g:indent_guides_enable_on_vim_startup = 1
 let g:airline_theme='deus'
@@ -59,9 +59,6 @@ set timeoutlen=1000 ttimeoutlen=0
 let g:indent_guides_auto_colors=0
 hi IndentGuidesEven ctermbg=235
 hi IndentGuidesOdd ctermbg=NONE
-" Set transparent background
-hi! Normal ctermbg=NONE
-hi! EndOfBuffer ctermbg=NONE
 
 " use pandoc for mmarkdown preview
 let g:vim_markdown_preview_pandoc=1
@@ -75,7 +72,6 @@ if filereadable('.wiki.vim')
     execute 'normal \<CR>'
 endif
 
-command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
 " Disable backups for gopass secret editing
 au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
 let g:complete_email_file=expand('~/.mail_addreses')
