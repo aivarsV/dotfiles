@@ -25,8 +25,7 @@ def getAccountData():
     p = subprocess.run(["gopass", "grep", "mbsync-"],
                 capture_output=True, encoding=sys.stdout.encoding)
     if p.returncode != 0:
-        print("gopass grep exited with non zero", file=sys.stderr)
-        #exit()
+        raise Exception("gopass grep exited with non zero")
 
     result = []
     accPaths = [x[:-8] for x in p.stdout.split("\n") if x.endswith(" matches")]
@@ -39,10 +38,10 @@ def getAccountData():
             if not l.startswith("mbsync-"):
                 continue
             words = l.split(": ")
-            cfg[words[0].replace("mbsync-", "")] = ": ".join(words[1:])
+            cfg[words[0].replace("mbsync-", "").lower()] = ": ".join(words[1:])
 
         if "type: xoauth-refresh-token" in lines:
-            result.append((name, xoauthHelper.RefreshToken(cfg["User"], lines[0]), cfg))
+            result.append((name, xoauthHelper.RefreshToken(cfg["user"], lines[0]), cfg))
         else:
             result.append((name, lines[0], cfg))
 
@@ -61,7 +60,7 @@ def getConfig():
         result.append("IMAPAccount " + accountName)
         result.append("Pass " + secret)
         for (k,v) in DEFAULT_ACCOUNT.items():
-            result.append(" ".join((k, cfgDict.get(k, v))))
+            result.append(" ".join((k, cfgDict.get(k.lower(), v))))
         result.append("")
 
         result.append("IMAPStore " + imapStoreName)
@@ -79,21 +78,22 @@ def getConfig():
         result.append("Master :{}:".format(imapStoreName))
         result.append("Slave :{}:".format(localStoreName))
         for (k,v) in DEFAULT_CHANEL.items():
-            result.append(" ".join((k, cfgDict.get(k, v))))
+            result.append(" ".join((k, cfgDict.get(k.lower(), v))))
         result.append("")
 
     return "\n".join(result)
 
-def main():
+def syncMails():
     f =  NamedTemporaryFile("w")
     try:
         f.write(getConfig())
         f.flush()
-        p = subprocess.Popen(["mbsync", "-c", f.name, "-a"])
+        p = subprocess.Popen(["mbsync", "-c", f.name, "-a", "--verbose"])
         time.sleep(1)
     finally:
         f.close()
-    p.wait()
+    if p.wait() != 0:
+        raise Exception("mbsync exited with non zero")
 
     p = subprocess.run(["notmuch", "new"])
 
@@ -101,8 +101,16 @@ def main():
                               encoding=sys.stdout.encoding,
                               capture_output=True).stdout.strip()
 
-    subprocess.run(["notify-send", "Mail sync", 
+    subprocess.run(["notify-send", "Mail sync",
                 "You have {0} unread mails".format(newMails)])
+
+
+def main():
+    try:
+        syncMails()
+    except Exception as e:
+        subprocess.run(["notify-send", "--urgency", "critical",
+                    "Mail sync error", "{0}".format(e)])
 
 
 if __name__ == '__main__':
