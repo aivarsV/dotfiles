@@ -1,5 +1,10 @@
 set nocompatible              " be iMproved, required
 set wildmenu
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 filetype off                  " required
 
 set shell=/bin/bash
@@ -12,12 +17,13 @@ call vundle#begin()
 
 " status bar plugin and themes
 Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'danilo-augusto/vim-afterglow.git'
+Plugin 'gkeep/iceberg-dark'
+
+" Color scheme
+Plugin 'https://github.com/cocopon/iceberg.vim'
 
 " indent guides
 Plugin 'nathanaelkane/vim-indent-guides'
-"Plugin 'Yggdroot/indentLine'
 
 " workspace manager plugin
 Plugin 'thaerkh/vim-workspace'
@@ -41,14 +47,16 @@ set rtp+=~/.vim/runtime
 set updatetime=100
 set relativenumber
 set scrolloff=1
+set cursorline
 set number
 syntax on
-let g:afterglow_inherit_background=1
-let g:afterglow_use_italics=0
-colorscheme afterglow
+set background=dark
+colorscheme iceberg
+hi! Normal ctermbg=NONE guibg=NONE
+hi! EndOfBuffer ctermbg=NONE guibg=NONE
 set ts=2 sw=2 et
 let g:indent_guides_enable_on_vim_startup = 1
-let g:airline_theme='deus'
+let g:airline_theme='icebergDark'
 let g:workspace_session_disable_on_args = 1
 let g:airline#extensions#tabline#enabled = 0
 let g:airline_powerline_fonts = 1
@@ -57,8 +65,8 @@ set timeoutlen=1000 ttimeoutlen=0
 
 " indentation colors
 let g:indent_guides_auto_colors=0
-hi IndentGuidesEven ctermbg=235
-hi IndentGuidesOdd ctermbg=NONE
+hi IndentGuidesEven guibg=#1e2132 ctermbg=235
+hi IndentGuidesOdd guibg=NONE ctermbg=NONE
 
 " use pandoc for mmarkdown preview
 let g:vim_markdown_preview_pandoc=1
