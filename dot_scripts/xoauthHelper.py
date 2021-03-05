@@ -12,7 +12,7 @@ PAYLOAD_BASE = {
 
 def getClientCredentials():
     print("getting client credentials")
-    lines = subprocess.run(['gopass', 'show', CLIENT_CREDENTIALS],
+    lines = subprocess.run(['gopass', 'show', "-f", CLIENT_CREDENTIALS],
                 encoding=sys.stdout.encoding, capture_output=True).stdout.split('\n')
     PAYLOAD_BASE['client_secret'] = lines[0]
     PAYLOAD_BASE['client_id'] = lines[1].split(':')[-1].strip()

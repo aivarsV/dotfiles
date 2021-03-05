@@ -109,7 +109,7 @@ def getCredentials(sender):
                 ).stdout.split('\n')[0][:-len(' matches')]
 
     credential_results = subprocess.run(
-                ['gopass', 'show', accountPath],
+                ['gopass', 'show', "-f", accountPath],
                 capture_output=True, encoding=sys.stdin.encoding
                 )
     assert credential_results.returncode == 0, f'Have you forgot to set correct sender? Currently: <{sender}>'

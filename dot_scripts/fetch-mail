@@ -32,16 +32,16 @@ def getAccountData():
     for ap in accPaths:
         name = path.basename(ap)
         cfg = {}
-        lines = subprocess.run(["gopass", "show", ap],
+        lines = subprocess.run(["gopass", "show", "-f", ap],
                     encoding=sys.stdout.encoding, capture_output=True).stdout.split("\n")
         for l in lines:
             if not l.startswith("mbsync-"):
                 continue
             words = l.split(": ")
-            cfg[words[0].replace("mbsync-", "").lower()] = ": ".join(words[1:])
+            cfg[words[0].replace("mbsync-", "")] = ": ".join(words[1:])
 
         if "type: xoauth-refresh-token" in lines:
-            result.append((name, xoauthHelper.RefreshToken(cfg["user"], lines[0]), cfg))
+            result.append((name, xoauthHelper.RefreshToken(cfg["User"], lines[0]), cfg))
         else:
             result.append((name, lines[0], cfg))
 
@@ -60,7 +60,7 @@ def getConfig():
         result.append("IMAPAccount " + accountName)
         result.append("Pass " + secret)
         for (k,v) in DEFAULT_ACCOUNT.items():
-            result.append(" ".join((k, cfgDict.get(k.lower(), v))))
+            result.append(" ".join((k, cfgDict.get(k, v))))
         result.append("")
 
         result.append("IMAPStore " + imapStoreName)
@@ -78,7 +78,7 @@ def getConfig():
         result.append("Master :{}:".format(imapStoreName))
         result.append("Slave :{}:".format(localStoreName))
         for (k,v) in DEFAULT_CHANEL.items():
-            result.append(" ".join((k, cfgDict.get(k.lower(), v))))
+            result.append(" ".join((k, cfgDict.get(k, v))))
         result.append("")
 
     return "\n".join(result)
@@ -110,7 +110,7 @@ def main():
         syncMails()
     except Exception as e:
         subprocess.run(["notify-send", "--urgency", "critical",
-                    "Mail sync error", "{0}".format(e)])
+                    "Mail sync error", "{0}".format(repr(e))])
 
 
 if __name__ == '__main__':
