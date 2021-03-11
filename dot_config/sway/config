@@ -227,7 +227,9 @@ default_border pixel 1
 focus_follows_mouse no
 smart_borders on
 popup_during_fullscreen smart
-font DejaVu Sans Mono 9
+font Hack 9
+client.focused #2b3256 #2b3256 #ced1e4 #50B587 #5763a9
+client.unfocused #000020 #1e2130 #454c6f #252525 #25252525
 
 # set GTK theme
 exec gsettings set org.gnome.desktop.interface font-name DejaVu Sans 10
