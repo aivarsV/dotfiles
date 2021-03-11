@@ -48,7 +48,8 @@ for_window [app_id=$floaters] move position center
 ## Firefox camera/mic icon
 for_window [title="Firefox — Sharing Indicator"] floating enable
 for_window [title="Firefox — Sharing Indicator"] move position 0 720
-no_focus [title="Firefox — Sharing Indicator"] 
+for_window [title="Firefox — Sharing Indicator"] sticky enable
+no_focus [title="Firefox — Sharing Indicator"]
 
 # Still looking for better solution for GTK file selectors
 floating_maximum_size 1300 x 700
@@ -236,13 +237,13 @@ exec gsettings set org.gnome.desktop.interface font-name DejaVu Sans 10
 exec gsettings set org.gnome.desktop.interface gtk-theme Kogir-dark
 ### Auto started daemons
 exec mako --padding 6 --default-timeout 5000 --layer overlay
-exec ~/.scripts/screen-ctrl wallpaper
+exec_always ~/.scripts/screen-ctrl wallpaper
 exec ~/.scripts/screen-ctrl toggle-screensaver
 # Because I keep it open anyways
 exec $launch-native firefox
 exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
 exec systemctl --user start fetch-wallpaper.timer
-exec redshift
+exec redshift -l 56.93:24
 
 #
 # Status Bar:
