@@ -1,0 +1,22 @@
+anchor=bottom-right
+font=Hack 10
+background-color=#2e3244
+text-color=#c6c8d1
+progress-color=over #00000044
+margin=5,15
+border-size=2
+border-color=#84a8c6aa
+border-radius=5
+padding=15
+default-timeout=5000
+max-visible=9
+layer=overlay
+max-icon-size=48
+group-by=summary,app-name
+
+[urgency=high]
+ignore-timeout=true
+default-timeout=20000
+background-color=#e27878
+text-color=#161821
+

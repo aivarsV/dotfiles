@@ -236,7 +236,7 @@ client.unfocused #000020 #1e2130 #454c6f #252525 #25252525
 exec gsettings set org.gnome.desktop.interface font-name DejaVu Sans 10
 exec gsettings set org.gnome.desktop.interface gtk-theme Kogir-dark
 ### Auto started daemons
-exec mako --padding 6 --default-timeout 5000 --layer overlay
+exec mako
 exec_always ~/.scripts/screen-ctrl wallpaper
 exec ~/.scripts/screen-ctrl toggle-screensaver
 # Because I keep it open anyways
