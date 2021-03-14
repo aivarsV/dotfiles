@@ -1,3 +1,4 @@
+set help = no
 set folder = ~/.mail/
 set sort = 'reverse-date'
 set sleep_time = 0		# Pause 0 seconds for informational messages
@@ -5,7 +6,7 @@ set markers = no		# Disables the `+` displayed at line wraps
 set mark_old = no		# Unread mail stay unread until read
 set wait_key = no		# mutt won't ask "press key to continue"
 set abort_key = "<Esc>"
-auto_view text/html		
+auto_view text/html
 alternative_order text/plain text/html
 
 set charset = "utf-8"
@@ -13,7 +14,7 @@ set send_charset = "utf-8"
 set assumed_charset = "utf-8"
 
 set date_format = "%y/%m/%d %H:%M"
-set index_format="%2C %zs %?X?A& ? %D %-15.15F %s (%-4.4c)"
+set index_format="%4C %zs %?X?A& ? %D %-15.15F %s (%-4.4c)"
 
 source /usr/share/doc/neomutt/vim-keys/vim-keys.rc
 set mbox_type = Maildir
@@ -58,36 +59,28 @@ bind index,pager T modify-labels
 macro index <Return> "<modify-labels>-unread\nk<display-message>" "Show message"
 
 # Default index colors:
-color index yellow default '.*'
-color index_author red default '.*'
-color index_number blue default
-color index_subject cyan default '.*'
+color normal none color252 default
+color index_number blue color235
+color index_author color109 default '.*'
+color index_date color110 default
+color indicator color12 black
 
-# New mail is boldened:
-color index brightyellow black "~N"
-color index_author brightred black "~N"
-color index_subject brightcyan black "~N"
+## New mail is boldened:
+color index brightblue default "~N"
 
-# Other colors and aesthetic settings:
+## Other colors and aesthetic settings:
 mono bold bold
 mono underline underline
 mono indicator reverse
 mono error bold
-color normal default default
-color indicator brightblack white
-color sidebar_highlight red default
-color sidebar_divider brightblack black
+color sidebar_highlight underline color12 default
 color sidebar_flagged red black
-color sidebar_new green black
-color normal brightyellow default
-color error red default
-color tilde black default
+color error color203 color234
 color message cyan default
 color markers red white
-color attachment white default
-color search brightmagenta default
-color status brightyellow black
-color hdrdefault brightgreen default
+color status color252 blue
+color attachment color109 default
+color search color234 color216
 color quoted green default
 color quoted1 blue default
 color quoted2 cyan default
@@ -95,28 +88,13 @@ color quoted3 yellow default
 color quoted4 red default
 color quoted5 brightred default
 color signature brightgreen default
-color bold black default
-color underline black default
-color normal default default
 
-# Regex highlighting:
-color header blue default ".*"
-color header brightmagenta default "^(From)"
-color header brightcyan default "^(Subject)"
-color header brightwhite default "^(CC|BCC)"
-color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
-color body brightblue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
-color body green default "\`[^\`]*\`" # Green text between ` and `
-color body brightblue default "^# \.*" # Headings as bold blue
-color body brightcyan default "^## \.*" # Subheadings as bold cyan
-color body brightgreen default "^### \.*" # Subsubheadings as bold green
-color body yellow default "^(\t| )*(-|\\*) \.*" # List items as yellow
-color body brightcyan default "[;:][-o][)/(|]" # emoticons
-color body brightcyan default "[;:][)(|]" # emoticons
-color body brightcyan default "[ ][*][^*]*[*][ ]?" # more emoticon?
-color body brightcyan default "[ ]?[*][^*]*[*][ ]" # more emoticon?
-color body red default "(BAD signature)"
-color body cyan default "(Good signature)"
+## Regex highlighting:
+color header color146 default ".*"
+color header brightblue default "^(Subject)"
+color body color109 default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+color body color12 default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
+color body blue default "\`[^\`]*\`" # Green text between ` and `
 color body brightblack default "^gpg: Good signature .*"
 color body brightyellow default "^gpg: "
 color body brightyellow red "^gpg: BAD signature from.*"
