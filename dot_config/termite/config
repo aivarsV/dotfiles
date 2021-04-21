@@ -54,7 +54,7 @@ font = Hack 12
 # Sundried theme from 
 # https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/termite/Sundried
 #background = "#1a1818"
-background = rgba(26, 24, 24, 0.90)
+background = rgba(26, 24, 24, 0.95)
 cursor = "#ffffff"
 foreground = "#c9c9c9"
 color0 = #302b2a
