@@ -1,0 +1,170 @@
+# vim: set expandtab sw=4 tabstop=4:
+
+set git-colors          = no
+set show-changes        = no
+set show-untracked      = no
+set ignore-case         = smart-case
+set editor-line-number  = yes
+set commit-order        = topo
+set vertical-split      = no
+set split-view-height   = 90%
+# word diff instead of line
+set diff-options        = --word-diff=plain
+
+# UI display settings
+set tab-size			= 4		# Number of spaces to use when expanding tabs
+
+# clear default bindings
+bind generic	<Lt>	none			# Go back to the previous view state
+bind generic	<Down>	none			# Move to next
+bind generic	<C-N>	none
+bind generic	<Up>	none		# Move to previous
+bind generic	<C-P>	none
+bind generic	,	none			# Move to parent
+bind generic	O	none		# Maximize the current view
+bind generic	Q	none			# Close all views and quit
+bind main	H	none		# Jump to HEAD commit
+bind generic	v	none		# Show Tig version
+bind generic	W	none	# Toggle ignoring whitespace in diffs
+bind generic	$	none
+bind generic	F	none	# Toggle file name display
+bind generic	o	none			# Open the options menu
+bind generic	i	none	# Toggle field to sort by
+bind generic	~	none	# Toggle (line) graphics mode
+bind generic	I	none	# Toggle ascending/descending sort order
+bind generic	|	none
+bind generic	<Left>	none
+bind generic	<Right>	none
+bind generic	<Ins>	none
+bind generic	<Del>	none
+bind generic	<SBack>	none
+bind generic	<SFwd>	none
+bind generic	<Space>	none
+bind generic	-	none
+bind generic	<Home>	none
+bind generic	<End>   none
+bind generic	d	none
+bind generic	l	none
+bind generic	L	none
+bind generic	f	none
+bind generic	p	none
+bind generic	s	none
+bind generic	S	none		# Compat binding to avoid going crazy!
+bind generic	c	none
+bind status	    d	none		# Show short or long status labels
+bind search	<C-N>	none
+bind search	<C-J>	none
+bind search	<C-P>	none
+bind search	<C-K>	none
+bind search	<C-C>	none
+
+# Keybindings
+# View manipulation
+bind generic	<Enter>	enter			# Enter and open selected entry
+bind generic	j	move-down
+bind generic	k	move-up
+bind generic	q	view-close		# Close the current view
+bind generic	<Tab>	view-next		# Move focus to the next view
+bind generic	<C-L>	refresh			# Reload and refresh view
+bind generic	<F5>	refresh
+bind generic	<C-W>	maximize		# Maximize the current view
+bind generic	<C-C>	quit			# Close all views and quit
+
+# Commonly used bindings
+bind generic	<Hash>	>echo %(commit)	# because there is no clipboard on remote
+bind main	c	?git checkout %(commit)
+bind main	C	?git checkout %(branch)
+bind main	r	?git reset %(commit)
+bind main	R	?git reset --hard %(commit)
+bind main	m	?git merge %(commit)
+bind main	M	?git merge %(branch)
+
+bind reflog	c	?git checkout %(commit)
+bind reflog	C	?git checkout %(branch)
+
+bind refs	C	?git checkout %(branch)
+bind refs	M	?git merge %(branch)
+
+bind status	C	!git commit
+
+bind stash	A	?git stash apply %(stash)
+bind stash	P	?git stash pop %(stash)
+bind stash	!	?git stash drop %(stash)
+
+# Normal commands
+# ---------------
+
+# View switching
+bind generic	<C-M>	view-main
+bind generic	t	view-tree
+bind generic	b	view-blame
+bind generic	<C-R>	view-refs
+bind generic	<F1>	view-help
+bind generic	y	view-stash
+bind generic	<C-F>	view-grep
+
+# View specific
+bind status	u	status-update		# Stage/unstage changes in file
+bind status	!	status-revert		# Revert changes in file
+bind status	M	status-merge		# Open git-mergetool(1)
+
+bind stage	u	status-update		# Stage/unstage current diff (c)hunk
+bind stage	1	stage-update-line	# Stage/unstage current line
+bind stage	2	stage-update-part	# Stage/unstage part of chunk
+bind stage	!	status-revert		# Revert current diff (c)hunk
+bind stage	\	stage-split-chunk	# Split current diff (c)hunk
+bind stage	]	:/^@@			# Jump to next (c)hunk
+bind stage	-	:toggle diff-context -1	# Decrease the diff context
+bind stage	+	:toggle diff-context +1	# Increase the diff context
+
+bind diff	]	:/^@@			# Jump to next (c)hunk
+bind diff	-	:toggle diff-context -1	# Decrease the diff context
+bind diff	+	:toggle diff-context +1	# Increase the diff context
+
+bind pager	]	:/^@@			# Jump to next (c)hunk
+
+bind main	<C-G>	:toggle commit-title-graph # Toggle revision graph visualization
+bind main	F	:toggle commit-title-refs  # Toggle reference display (tags/branches)
+
+bind reflog	F	:toggle commit-title-refs  # Toggle reference display (tags/branches)
+
+# Cursor navigation
+bind generic	<C-D>	move-half-page-down
+bind generic	<C-U>	move-half-page-up
+bind generic	<PgDown> move-page-down
+bind generic	<PgUp>	move-page-up
+bind generic    g       move-first-line
+bind generic    G       move-last-line
+bind main       G       move-last-line
+
+# Scrolling
+bind generic	^	scroll-first-col
+bind generic	h	scroll-left
+bind generic	l	scroll-right
+bind generic	<C-Y>	scroll-line-up
+bind generic	<C-E>	scroll-line-down
+
+# Searching
+bind generic	/	search
+bind generic	?	search-back
+bind generic	n	find-next
+bind generic	N	find-prev
+# Navigation keys used while in search prompt
+bind search	<Down>	find-next
+bind search	<Up>	find-prev
+
+# Option manipulation
+# Bindings for toggling settings
+bind generic	D	:toggle date		# Toggle date display
+bind generic	A	:toggle author		# Toggle author display
+bind generic	X	:toggle id		# Toggle commit ID display
+bind generic	%	:toggle file-filter
+
+# Misc
+bind generic	e	edit			# Open in editor
+bind generic	:	prompt			# Open the prompt
+bind generic	z	stop-loading		# Stop all loading views
+
+
+# import colors
+source ~/.config/tig/iceberg.tigcolors
