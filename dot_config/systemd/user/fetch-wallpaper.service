@@ -1,10 +1,12 @@
 [Unit]
-Description=Download random wallpaper from unsplash.com
+Description=Download live earth wallpaper from wallheaven.cc
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/curl -L -X GET -G https://source.unsplash.com/random --output '${WALLPAPER_FILE}_'
-ExecStartPost=/usr/bin/mv '${WALLPAPER_FILE}_' '${WALLPAPER_FILE}'
+ExecStart=/bin/bash -c 'curl -X GET -o '/tmp/%u_wallpaper.png' $(curl -X GET "https://wallhaven.cc/api/v1/search?ratios=16x9&atleast=1920x1080&sorting=random" | jq -r '.data[0].path')'
+#ExecStartPost=/usr/bin/convert '/tmp/%u_wallpaper.png' -resize 1920x1080 -background black -gravity Center -extent 1920x1080 '${WALLPAPER_FILE}'
+#ExecStartPost=/usr/bin/rm '/tmp/%u_wallpaper.png'
+ExecStartPost=/usr/bin/mv '/tmp/%u_wallpaper.png' '${WALLPAPER_FILE}'
 ExecStartPost=/usr/bin/bash /home/%u/.scripts/screen-ctrl wallpaper
 
 

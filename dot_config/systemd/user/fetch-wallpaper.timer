@@ -2,7 +2,7 @@
 Description=Scrape wallpapers from web services
 
 [Timer]
-OnUnitActiveSec=30min
+OnUnitActiveSec=10min
 OnActiveSec=30min
 
 [Install]
