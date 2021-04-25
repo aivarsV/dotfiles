@@ -8,7 +8,8 @@ function next-free-ws
                                select(.type == "workspace" and .name != "__i3_scratch")] | 
                           map(if (.|length) > 0 then 
                                {"name" : (.name | tonumber), "count":(.nodes | length)}
-                             else empty end) | 
+                             else empty end) |
+                          sort_by(.name) | 
                           . as $ws | 
                           [range(0; ($ws | length ))] | 
                           map(if . +1 < $ws[.].name then
