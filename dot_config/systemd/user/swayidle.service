@@ -1,0 +1,10 @@
+[Unit]
+Description=Lock and dim screen after idle period
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/swayidle -d -w timeout 600 "~/.scripts/screen-ctrl lock" timeout 660 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "~/.scripts/screen-ctrl lock" lock "~/.scripts/screen-ctrl lock"
+Restart=always
+
+[Install]
+WantedBy=sway-session.target

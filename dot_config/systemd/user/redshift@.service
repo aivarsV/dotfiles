@@ -1,0 +1,10 @@
+[Unit]
+Description=Redshift display colour temperature adjustment at %I
+Documentation=http://jonls.dk/redshift/
+
+[Service]
+ExecStart=/usr/bin/redshift -l %I
+Restart=always
+
+[Install]
+WantedBy=sway-session.target

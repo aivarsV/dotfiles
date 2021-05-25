@@ -218,8 +218,8 @@ bindsym XF86AudioRaiseVolume exec ~/.scripts/audio-ctrl +5%
 bindsym XF86AudioLowerVolume exec ~/.scripts/audio-ctrl -5%
 
 # Screen control related
-bindsym $mod+Ctrl+l exec ~/.scripts/screen-ctrl lock
-bindsym XF86ScreenSaver exec ~/.scripts/screen-ctrl lock
+bindsym $mod+Ctrl+l exec loginctl lock-session
+bindsym XF86ScreenSaver exec loginctl lock-session
 bindsym XF86MonBrightnessUp exec ~/.scripts/screen-ctrl +backlight
 bindsym XF86MonBrightnessDown exec ~/.scripts/screen-ctrl -backlight
 
@@ -235,15 +235,17 @@ client.unfocused #000020 #1e2130 #454c6f #252525 #252525
 # set GTK theme
 exec gsettings set org.gnome.desktop.interface font-name DejaVu Sans 10
 exec gsettings set org.gnome.desktop.interface gtk-theme Kogir-dark
+
+# For pinentry to work
+exec dbus-update-activation-environment WAYLAND_DISPLAY
+
 ### Auto started daemons
-exec mako
-exec_always ~/.scripts/screen-ctrl wallpaper
-exec ~/.scripts/screen-ctrl toggle-screensaver
+exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
+
+output * bg $WALLPAPER_FILE fit
+
 # Because I keep it open anyways
 exec $launch-native firefox
-exec systemctl --user set-environment SWAYSOCK=$SWAYSOCK
-exec systemctl --user start fetch-wallpaper.timer
-exec redshift -l 56.93:24
 
 #
 # Status Bar:
