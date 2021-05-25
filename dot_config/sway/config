@@ -51,6 +51,9 @@ for_window [title="Firefox — Sharing Indicator"] move position 0 720
 for_window [title="Firefox — Sharing Indicator"] sticky enable
 no_focus [title="Firefox — Sharing Indicator"]
 
+## GTK 2 file selector is floating
+for_window [title="Select one or more files"] floating enable
+
 # Still looking for better solution for GTK file selectors
 floating_maximum_size 1300 x 700
 
