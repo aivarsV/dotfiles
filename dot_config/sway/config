@@ -15,10 +15,10 @@ set $launch-native ~/.scripts/wayland-native
 # dropdown app launcher
 set $dropdown_launch ~/.scripts/ddspawn
 # Your preferred terminal emulator
-set $term $launch-native termite
+set $term $launch-native alacritty
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
-set $menu $term --name "app_launcher" -e ~/.scripts/fzf-launcher
+set $menu $term --option window.class.general="app_launcher" -e ~/.scripts/fzf-launcher
 # Floating windows are identified by this selector
 set $floaters "(app_launcher|dropdown_*)"
 

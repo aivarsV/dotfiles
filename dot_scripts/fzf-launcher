@@ -79,7 +79,7 @@ then
     sleep 0.5
     $MATCH
 EOL
-  swaymsg "exec \$term --name=$COMMAND -e $tmp_script"
+  swaymsg "exec \$term --option window.class.general=$COMMAND -e $tmp_script"
 else
   # graphical wayland app or xwayland app
   swaymsg "exec $(if [[ -z "$LAUNCH_TYPE" ]]; then echo \$launch-native; fi) $MATCH"

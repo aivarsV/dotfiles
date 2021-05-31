@@ -18,7 +18,7 @@ dd_visible=`swaymsg -t get_tree | jq "recurse(.nodes[]?,.floating_nodes[]?) | se
 if [[ -z "$dd_visible" ]]
 then
 	echo "Window not detected... spawning."
-	swaymsg "exec \$term --name=dropdown_$script -e '$scriptpath $@'"
+	swaymsg "exec \$term --option window.class.general=dropdown_$script -e '$scriptpath $@'"
   dd_visible=false
 fi
 
