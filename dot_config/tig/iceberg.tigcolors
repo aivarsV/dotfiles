@@ -69,7 +69,7 @@ color main-remote		yellow	default
 color main-replace		cyan	default
 color main-tracked		yellow	default	bold
 color main-ref			cyan	default
-color main-head			cyan	default	bold
+color main-head			red	default	bold
 color stat-none			default	default
 color stat-staged		magenta	default
 color stat-unstaged		magenta	default
