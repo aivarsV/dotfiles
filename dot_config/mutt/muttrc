@@ -57,7 +57,7 @@ set pager_index_lines=5
 macro index \Cf "<vfolder-from-query>" "Search mailbox"
 bind index,pager T modify-labels
 bind index <Return> display-message
-#macro index <Return> "<modify-labels>-unread\nk<display-message>" "Show message"
+macro compose a "<shell-escape>${HOME}/.config/mutt/mutt-picker ${XDG_RUNTIME_DIR}/mutt-attachment-list<enter><enter-command>source ${XDG_RUNTIME_DIR}/mutt-attachment-list<enter>"
 
 # Default index colors:
 color normal none color252 default

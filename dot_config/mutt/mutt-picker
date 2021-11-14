@@ -1,0 +1,6 @@
+#!/bin/sh
+# Custom TUI attachment picker for mutt
+
+nnn -p - |\
+sed 's/ /^V /g' |\
+awk 'BEGIN {printf "%s", "push "} {printf "%s", "<attach-file>\""$0"\"<enter>"} END {printf "<shell-escape>\"rm '$1'\"<enter>"}' > $1
