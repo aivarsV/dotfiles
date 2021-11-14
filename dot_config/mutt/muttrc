@@ -1,5 +1,6 @@
 set help = no
 set folder = ~/.mail/
+set postponed = ~/.mail/_postponed
 set sort = 'reverse-date'
 set sleep_time = 0		# Pause 0 seconds for informational messages
 set markers = no		# Disables the `+` displayed at line wraps
@@ -55,8 +56,8 @@ bind index,pager B sidebar-toggle-visible
 set pager_index_lines=5
 macro index \Cf "<vfolder-from-query>" "Search mailbox"
 bind index,pager T modify-labels
-# remove unread tag when opening new message
-macro index <Return> "<modify-labels>-unread\nk<display-message>" "Show message"
+bind index <Return> display-message
+#macro index <Return> "<modify-labels>-unread\nk<display-message>" "Show message"
 
 # Default index colors:
 color normal none color252 default
