@@ -11,14 +11,14 @@ set $down j
 set $up k
 set $right l
 # Because some apps freak out, if see DISPLAY variable
-set $launch-native ~/.scripts/wayland-native
+set $launch-native ~/.local/bin/wayland-native
 # dropdown app launcher
-set $dropdown_launch ~/.scripts/ddspawn
+set $dropdown_launch ~/.local/bin/ddspawn
 # Your preferred terminal emulator
 set $term $launch-native alacritty
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
-set $menu $term --option window.class.instance="app_launcher" -e ~/.scripts/fzf-launcher
+set $menu $term --option window.class.instance="app_launcher" -e ~/.local/bin/fzf-launcher
 # Floating windows are identified by this selector
 set $floaters "(app_launcher|dropdown_*)"
 
@@ -135,8 +135,8 @@ floating_maximum_size 1300 x 700
     # We just use 1-10 as the default.
     #
     # Move to next free workspace
-    bindsym $mod+grave exec ~/.scripts/sway_next_free_workspace open
-    bindsym $mod+Shift+grave exec ~/.scripts/sway_next_free_workspace move-active
+    bindsym $mod+grave exec ~/.local/bin/sway_next_free_workspace open
+    bindsym $mod+Shift+grave exec ~/.local/bin/sway_next_free_workspace move-active
 #
 # Layout stuff:
 #
@@ -171,14 +171,13 @@ bindsym $mod+t exec $dropdown_launch $SHELL
 # calculator
 bindsym $mod+c exec $dropdown_launch octave-cli
 
-bindsym XF86Launch1 exec $dropdown_launch ~/.scripts/tmux-dashboard
+bindsym XF86Launch1 exec $dropdown_launch ~/.local/bin/tmux-dashboard
 
 bindsym $mod+m exec $dropdown_launch neomutt
-bindsym $mod+Shift+m exec ~/.scripts/fetch-mail
+bindsym $mod+Shift+m exec ~/.local/bin/fetch-mail
 
 # keys that are still not bound to any functions
     #state 0x0, keycode 220 (keysym 0x1008ff8f, XF86WebCam), same_screen YES,
-bindsym XF86WebCam exec ~/.scripts/signal-desktop
     #state 0x0, keycode 235 (keysym 0x1008ff59, XF86Display), same_screen YES,
 bindsym $mod+Shift+b exec $dropdown_launch ~/.backup_home.sh
 #
@@ -217,14 +216,14 @@ bindsym XF86AudioNext exec mpc next
 # Volume controls
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
 bindsym XF86AudioMicMute exec pactl set-source-mute 1 toggle
-bindsym XF86AudioRaiseVolume exec ~/.scripts/audio-ctrl +5%
-bindsym XF86AudioLowerVolume exec ~/.scripts/audio-ctrl -5%
+bindsym XF86AudioRaiseVolume exec ~/.local/bin/audio-ctrl +5%
+bindsym XF86AudioLowerVolume exec ~/.local/bin/audio-ctrl -5%
 
 # Screen control related
 bindsym $mod+Ctrl+l exec loginctl lock-session
 bindsym XF86ScreenSaver exec loginctl lock-session
-bindsym XF86MonBrightnessUp exec ~/.scripts/screen-ctrl +backlight
-bindsym XF86MonBrightnessDown exec ~/.scripts/screen-ctrl -backlight
+bindsym XF86MonBrightnessUp exec ~/.local/bin/screen-ctrl +backlight
+bindsym XF86MonBrightnessDown exec ~/.local/bin/screen-ctrl -backlight
 
 ### Visuals layout stuff
 default_border pixel 1
@@ -261,7 +260,7 @@ bar {
     separator_symbol ''
 
     # When the status_command prints a new line to stdout, swaybar updates.
-    status_command ~/.scripts/conky-bar
+    status_command ~/.local/bin/conky-bar
 
     colors {
         gaps 5 1

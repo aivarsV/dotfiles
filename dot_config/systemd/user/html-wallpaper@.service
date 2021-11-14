@@ -3,7 +3,7 @@ Description=Web server, delivering images
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python .scripts/web-wallpaper %i
+ExecStart=/usr/bin/python .local/bin/web-wallpaper %i
 
 [Install]
 WantedBy=sway-session.target

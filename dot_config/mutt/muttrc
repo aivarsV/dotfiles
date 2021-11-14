@@ -29,7 +29,7 @@ set forward_format = "Fwd: %s"	# format of subject when forwarding
 set forward_quote		# include message in forwards
 set reverse_name		# reply as whomever it was to
 set include			# include message in replies
-set sendmail = "${HOME}/.scripts/send-mail"
+set sendmail = "${HOME}/.local/bin/send-mail"
 set edit_headers
 set autoedit
 set record = ""

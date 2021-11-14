@@ -42,7 +42,7 @@ __prompt_command() {
   stty raw -echo min 0 time 0
   printf "\033]$Ps;?\033\\"
   # xterm needs the sleep (or "time 1", but that is 1/10th second).
-  sleep 0.015
+  sleep 0.025
   read -r answer
   result=${answer#*;}
   stty $oldstty
@@ -76,7 +76,5 @@ __prompt_command() {
   PS0="$_colReset"
 }
 
-# Last executed command name in titlebar
-trap 'echo -ne "\033]2;${PWD/#$HOME/\~} \$ $(history 1 | sed "s/^[ ]*[0-9]*[ ]*//g")\007"' DEBUG
 
 trap "~/.local/bin/cleanup-history ~/.bash_history" EXIT

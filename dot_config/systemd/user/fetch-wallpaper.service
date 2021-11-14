@@ -7,6 +7,6 @@ ExecStart=/bin/bash -c 'curl -X GET -o '/tmp/%u_wallpaper.png' $(curl -X GET "ht
 #ExecStartPost=/usr/bin/convert '/tmp/%u_wallpaper.png' -resize 1920x1080 -background black -gravity Center -extent 1920x1080 '${WALLPAPER_FILE}'
 #ExecStartPost=/usr/bin/rm '/tmp/%u_wallpaper.png'
 ExecStartPost=/usr/bin/mv '/tmp/%u_wallpaper.png' '${WALLPAPER_FILE}'
-ExecStartPost=/usr/bin/bash /home/%u/.scripts/screen-ctrl wallpaper
+ExecStartPost=/usr/bin/bash /home/%u/.local/bin/screen-ctrl wallpaper
 
 

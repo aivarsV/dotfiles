@@ -1,0 +1,12 @@
+#!/bin/bash
+sleep 0.25
+if tmux has-session -t dashboard
+then
+  exec tmux attach -t dashboard
+else
+  exec tmux start \; \
+            new-session -s dashboard newsboat \; \
+            split-window -h -b -l 10 bash -c 'sleep 1; exec conky -c ~/.config/conky/dashboard.conf' \; \
+            set-option status off \; \
+            select-pane -R
+fi

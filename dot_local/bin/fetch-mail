@@ -16,7 +16,7 @@ DEFAULT_ACCOUNT = {
         "AuthMechs":"LOGIN"
         }
 DEFAULT_CHANEL = {
-        "Create":"Slave",
+        "Create":"Near",
         "Patterns":"",
         "Sync":"All"
         }
@@ -75,8 +75,8 @@ def getConfig():
         result.append("")
 
         result.append("Channel " + name)
-        result.append("Master :{}:".format(imapStoreName))
-        result.append("Slave :{}:".format(localStoreName))
+        result.append("Far :{}:".format(imapStoreName))
+        result.append("Near :{}:".format(localStoreName))
         for (k,v) in DEFAULT_CHANEL.items():
             result.append(" ".join((k, cfgDict.get(k, v))))
         result.append("")
@@ -93,7 +93,7 @@ def syncMails():
     finally:
         f.close()
     if p.wait() != 0:
-        raise Exception("mbsync exited with non zero")
+        raise Exception("mbsync exited with {0}".format(p.returncode))
 
     p = subprocess.run(["notmuch", "new"])
 
