@@ -25,7 +25,7 @@ list_options() {
 }
 
 prompt_user() {
-  list_options | fzf --reverse --border --tiebreak=index -e --print-query --expect=ctrl-space --cycle --bind=tab:down,btab:up --expect=alt-enter
+  list_options | fzf --reverse --tiebreak=index -e --print-query --expect=ctrl-space --cycle --bind=tab:down,btab:up --expect=alt-enter --no-info
 }
 
 
