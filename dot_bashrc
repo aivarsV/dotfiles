@@ -47,33 +47,11 @@ PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   local _cmdResult="$?"
 
-  local oldstty=$(stty -g)
-  local Ps=${1:-11}
-
-  stty raw -echo min 0 time 0
-  printf "\033]$Ps;?\033\\"
-  # xterm needs the sleep (or "time 1", but that is 1/10th second).
-  sleep 0.025
-  read -r answer
-  result=${answer#*;}
-  stty $oldstty
-  # Remove escape at the end.
-  if [[ -z "$(echo $result | sed 's/[^rgb:0-9a-f/]\+$//')" ]]
-  then
-    local _colReset='\[\e[0m\]'
-    local _colPwd='\[\e[97;44m\]'
-    local _colDelim='\[\e[0m\e[34m\]'
-    local _colFailure='\[\e[31m\]'
-    local _colCmd='\[\e[0m\e[94m\]'
-
-  else
-    local _colReset='\[\e[0m\]'
-    local _colPwd='\[\e[48;2;69;75;104m\e[38;2;198;200;209m\]'
-    local _colDelim='\[\e[0m\e[38;2;69;75;104m\]'
-    local _colFailure='\[\e[38;2;226;120;120m\]'
-    local _colCmd='\[\e[0m\e[94m\]'
-
-  fi
+  local _colReset='\[\e[0m\]'
+  local _colPwd='\[\e[97;44m\]'
+  local _colDelim='\[\e[0m\e[34m\]'
+  local _colFailure='\[\e[31m\]'
+  local _colCmd='\[\e[0m\e[94m\]'
 
   # Shortened version of $PWD
   PS1="$_colPwd \$(pwd | sed -r -e 's@'\"$HOME\"'@~@; s@([^/]{3})[^/]+/@\1/@g') ${_colDelim}$_colReset"
@@ -87,5 +65,4 @@ __prompt_command() {
   PS0="$_colReset"
 }
 
-
-trap "~/.local/bin/cleanup-history ~/.bash_history" EXIT
+trap '[[ "${BASH_COMMAND}" == __prompt_command ]] || echo -ne "\033]0;${PWD}: (${BASH_COMMAND})\007"' DEBUG
