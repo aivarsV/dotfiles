@@ -88,5 +88,7 @@ let g:complete_email_gpg_key = 'aivars@vaivods.lv'
 set hlsearch
 nnoremap <silent> <Space> :nohlsearch<Cr>
 nnoremap , :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+" Useful when browsing git repos
+nnoremap <C-\> :Ggrep <cword><CR><CR>:cwindow<CR><C-w>k
 " line numbers in folder listing
 let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
