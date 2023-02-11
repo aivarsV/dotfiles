@@ -83,7 +83,7 @@ endif
 " Disable backups for gopass secret editing
 au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
 let g:complete_email_file=expand('~/.mail_addreses')
-let g:complete_email_gpg_key = 'aivars.vaivods@edu.rtu.lv'
+let g:complete_email_gpg_key = 'aivars@vaivods.lv'
 " highlighting
 set hlsearch
 nnoremap <silent> <Space> :nohlsearch<Cr>
