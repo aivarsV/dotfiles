@@ -20,7 +20,8 @@ source /usr/share/fzf/key-bindings.bash
 
 # some useful aliases
 alias ls='ls --color=auto -1'
-alias gcp='gopass show -c $(gopass list -f | fzf)'
+alias gcp='gopass list -f | fzf | xargs --delimiter="\n" --no-run-if-empty gopass show -c'
+alias gsh='gopass list -f | fzf | xargs --delimiter="\n" --no-run-if-empty gopass show'
 alias sway='QT_QPA_PLATFORM=wayland-egl \
   QT_QPA_PLATFORMTHEME=qt5ct \
   CLUTTER_BACKEND=wayland \
