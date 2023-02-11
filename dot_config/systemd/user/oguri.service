@@ -1,0 +1,9 @@
+[Unit]
+Description=Show background image on wayland compositor
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/oguri
+
+[Install]
+WantedBy=wayland-session.target

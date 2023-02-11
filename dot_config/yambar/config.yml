@@ -1,0 +1,327 @@
+anchors:
+  - string: &base-edge
+      foreground: 3d435cff
+      deco: {background: {color: 1e2132ff}}
+  - string: &base-content
+      deco: {background: {color: 1e2132ff}}
+  - string: &base-middle
+      foreground: 1e2132ff
+      deco: {background: {color: 3d435cff}}
+  - string: &inactive-edge
+      foreground: 3d435cff
+      deco: {background: {color: 2e3244ff}}
+  - string: &inactive-content
+      foreground: 9698a1ff
+      deco: {background: {color: 2e3244ff}}
+  - string: &inactive-middle
+      foreground: 2e3244ff
+      deco: {background: {color: 3d435cff}}
+  - string: &active-edge
+      foreground: 3d435cff
+      deco: {background: {color: 84a0c6ff}}
+  - string: &active-content
+      foreground: 161821ff
+      deco: {background: {color: 84a0c6ff}}
+  - string: &active-middle
+      foreground: 84a0c6ff
+      deco: {background: {color: 3d435cff}}
+  - string: &warning-edge
+      foreground: 3d435cff
+      deco: {background: {color: e2a478ff}}
+  - string: &warning-content
+      foreground: 161821ff
+      deco: {background: {color: e2a478ff}}
+  - string: &warning-middle
+      foreground: e2a478ff
+      deco: {background: {color: 3d435cff}}
+  - string: &error-edge
+      foreground: 3d435cff
+      deco: {background: {color: e27878ff}}
+  - string: &error-content
+      foreground: 161821ff
+      deco: {background: {color: e27878ff}}
+  - string: &error-middle
+      foreground: e27878ff
+      deco: {background: {color: 3d435cff}}
+  - string: &gradient-edge
+      foreground: 3d435cff
+      deco: {background: {color: 2e3244ff}}
+  - string: &gradient-content
+      foreground: c6c8d1ff
+      deco: {background: {color: 2e3244ff}}
+  - string: &gradient-middle
+      foreground: 2e3244ff
+      deco: {background: {color: 3d435cff}}
+  - string: &gradient-inner
+      foreground: 1e2132ff
+      deco: {background: {color: 2e3244ff}}
+  - string: &background-content
+      deco: {background: {color: 3d435cff}}
+  - string: &background-inner
+      foreground: 3d435cff
+
+bar:
+  location: top
+  height: 20
+  foreground: c6c8d1ff
+  background: 3d435c50
+  font: Hack:pixelsize=14
+  left:
+    - river:
+        font: Hack:pixelsize=14:weight=bold
+        content:
+          map:
+            default:
+              map:
+                conditions:
+                  state == urgent:
+                    list:
+                      spacing: 0
+                      items:
+                        - string:
+                            <<: *warning-edge
+                            text: ""
+                        - string:
+                            <<: *warning-content
+                            text: " {id} "
+                        - string:
+                            <<: *warning-middle
+                            text: ""
+                  state == focused:
+                    list:
+                      spacing: 0
+                      items:
+                        - string:
+                            <<: *active-edge
+                            text: ""
+                        - string:
+                            <<: *active-content
+                            text: " {id} "
+                        - string:
+                            <<: *active-middle
+                            text: ""
+                  state == unfocused:
+                    map:
+                      conditions:
+                        occupied:
+                          list:
+                            spacing: 0
+                            items:
+                              - string:
+                                  <<: *inactive-edge
+                                  text: ""
+                              - string:
+                                  <<: *inactive-content
+                                  text: " {id} "
+                              - string:
+                                  <<: *inactive-middle
+                                  text: ""
+                        ~occupied: {empty: {}}
+                  state == invisible:
+                    map:
+                      conditions:
+                        occupied:
+                          list:
+                            spacing: 0
+                            items:
+                              - string:
+                                  <<: *inactive-edge
+                                  text: ""
+                              - string:
+                                  <<: *inactive-content
+                                  text: " {id} "
+                              - string:
+                                  <<: *inactive-middle
+                                  text: ""
+                        ~occupied: {empty: {}}
+                  state == visible:
+                    list:
+                      spacing: 0
+                      items:
+                        - string:
+                            <<: *base-edge
+                            text: ""
+                        - string:
+                            <<: *base-content
+                            text: " {id} "
+                        - string:
+                            <<: *base-middle
+                            text: ""
+            conditions:
+              id >= 11: {empty: {}} # scratchpad
+              #center:
+    - foreign-toplevel:
+        content:
+          map:
+            conditions:
+              ~activated: {empty: {}}
+              activated:
+                list:
+                  spacing: 0
+                  items:
+                    - string:
+                        <<: *background-content
+                        #text: " {title} "
+                        text: " {title} "
+    - label:
+        content:
+          string:
+            <<: *background-inner
+            text: ""
+  right:
+    - label:
+        content:
+          string:
+            <<: *background-inner
+            text: ""
+    - network:
+        name: enp0s25
+        content:
+          map:
+            conditions:
+              carrier:
+                list:
+                  spacing: 0
+                  items:
+                    - string:
+                        <<: *base-middle
+                        text: ""
+                    - string:
+                        <<: *base-content
+                        text: " E:{state} "
+                    - string:
+                        <<: *base-edge
+                        text: ""
+              ~carrier: {empty: {}}
+    - network:
+        name: wlp3s0
+        content:
+          map:
+            conditions:
+              carrier:
+                list:
+                  spacing: 0
+                  items:
+                    - string:
+                        <<: *base-middle
+                        text: ""
+                    - string:
+                        <<: *base-content
+                        text: " {ssid},{signal}dBm "
+                    - string:
+                        <<: *base-edge
+                        text: ""
+              ~carrier: {empty: {}}
+    - battery:
+        name: BAT0
+        poll-interval: 15
+        content:
+          map:
+            conditions:
+              state == discharging:
+                map:
+                  conditions:
+                    capacity > 25:
+                      list:
+                        spacing: 0
+                        items:
+                          - string:
+                              <<: *inactive-middle
+                              text: ""
+                          - string:
+                              <<: *inactive-content
+                              text: " B:{capacity}% "
+                          - string:
+                              <<: *inactive-edge
+                              text: ""
+                    capacity <= 25:
+                      map:
+                        conditions:
+                          capacity > 12:
+                            list:
+                              spacing: 0
+                              items:
+                                - string:
+                                    <<: *warning-middle
+                                    text: ""
+                                - string:
+                                    <<: *warning-content
+                                    text: " B:{capacity}% "
+                                - string:
+                                    <<: *warning-edge
+                                    text: ""
+                          capacity <= 12:
+                            list:
+                              spacing: 0
+                              items:
+                                - string:
+                                    <<: *error-middle
+                                    text: ""
+                                - string:
+                                    <<: *error-content
+                                    text: " B:{capacity}% "
+                                - string:
+                                    <<: *error-edge
+                                    text: ""
+              state != discharging:
+                list:
+                  spacing: 0
+                  items:
+                    - string:
+                        <<: *base-middle
+                        text: ""
+                    - string:
+                        <<: *base-content
+                        text: " B:{capacity}% "
+                    - string:
+                        <<: *base-edge
+                        text: ""
+    - mpd:
+        host: /run/user/1000/mpd/socket
+        content:
+          map:
+            conditions:
+              state == playing:
+                list:
+                  spacing: 0
+                  items:
+                    - string:
+                        <<: *active-middle
+                        text: ""
+                    - string:
+                        <<: *active-content
+                        text: " MPD "
+                    - string:
+                        <<: *active-edge
+                        text: ""
+              state != playing:
+                list:
+                  spacing: 0
+                  items:
+                    - string:
+                        <<: *gradient-middle
+                        text: ""
+                    - string:
+                        <<: *gradient-content
+                        text: " MPD "
+                    - string:
+                        <<: *gradient-edge
+                        text: ""
+    - clock:
+        date-format: "%a %Y-%m-%d"
+        content:
+          list:
+            spacing: 0
+            items:
+              - string:
+                  <<: *base-middle
+                  text: ""
+              - string:
+                  <<: *base-content
+                  text: " {time} "
+              - string:
+                  <<: *base-content
+                  text: ""
+              - string:
+                  <<: *base-content
+                  text: " {date} "

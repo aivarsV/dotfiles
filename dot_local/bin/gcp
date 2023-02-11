@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gopass list -f | fzf | xargs --delimiter="\n" --no-run-if-empty gopass show -c

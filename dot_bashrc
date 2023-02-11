@@ -29,6 +29,17 @@ alias sway='QT_QPA_PLATFORM=wayland-egl \
   WALLPAPER_FILE=~/Attēli/wallpaper.png \
   BROWSER=firefox \
   exec sway'
+alias river='QT_QPA_PLATFORM=wayland-egl \
+  QT_QPA_PLATFORMTHEME=qt5ct \
+  CLUTTER_BACKEND=wayland \
+  SDL_VIDEODRIVER=wayland \
+  GDK_BACKEND=wayland \
+  WALLPAPER_FILE=~/Attēli/wallpaper.png \
+  BROWSER=firefox \
+  XKB_DEFAULT_LAYOUT="lv-custom" \
+  XKB_DEFAULT_OPTIONS="caps:escape" \
+  exec river'
+
 
 
 PROMPT_COMMAND=__prompt_command
