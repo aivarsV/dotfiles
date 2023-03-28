@@ -1,0 +1,9 @@
+[Unit]
+Description=Automaticaly configure display outputs
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kanshi
+
+[Install]
+WantedBy=wayland-session.target
