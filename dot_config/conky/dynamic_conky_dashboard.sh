@@ -29,5 +29,9 @@ done
 echo ""
 echo "${1}----Mails----"
 
-sed -r '/^virtual-mailboxes/!d; s/^.*\s+"(.*)"\s+"notmuch:\/\/\?query=(.*)"/'"${2}"'\1: ${color}${execi 15 "notmuch count tag:unread and \2"}/' .config/mutt/personal
+#sed -r '/^virtual-mailboxes/!d; s/^.*\s+"(.*)"\s+"notmuch:\/\/\?query=(.*)"/'"${2}"'\1: ${color}${execi 15 "notmuch count tag:unread and \2"}/' .config/mutt/personal
+sed -r 's/^([^=]*)=(.*)/'"${2}"'\1: ${color}${execi 15 "notmuch count tag:unread and \2"}/' .config/aerc/tags.conf
 
+#echo ""
+#echo "${1}----Events----\${color}"
+#remind -h -g ~/.config/remind/init.rem | awk 'NR > 2 && NF > 0 { if ($1 == "on") {print substr($0, 4)} else {print}}'
