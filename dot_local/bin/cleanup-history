@@ -49,6 +49,7 @@ ignore = [
     r"^cccccc",
     r"^ls",
     r"^sms ",
+    r"^task ",
     r"^usbguard allow",
     r"^printenv",
     # annoying if accidentally re-executed at a later date
