@@ -1,4 +1,5 @@
 auto-reload yes
+max-items 9999
 
 unbind-key ^D
 unbind-key Q
@@ -21,6 +22,7 @@ bind-key N prev-unread
 bind-key D pb-download
 bind-key U show-urls
 bind-key x pb-delete
+bind-key ^X delete-article
 
 browser "w3m %u"
 confirm-exit yes
