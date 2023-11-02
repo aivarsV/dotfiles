@@ -7,8 +7,7 @@ source "$(dirname "$0")/variables"
 # empty tag will cause to always open new instance
 dropdowns=(
   "SHELL"$'\t'" "$'\t'"$SHELL"$'\t'"$mod T"$'\t'"31"
-  "octave"$'\t'" "$'\t'"octave-cli"$'\t'"$mod C"$'\t'"30"
-  "dashboard"$'\t'"--option window.dimensions.columns=155 --option window.dimensions.lines=45"$'\t'"$HOME/.local/bin/tmux-dashboard"$'\t'"None XF86Launch1"$'\t'"29"
+  "dashboard"$'\t'"--option window.dimensions.columns=155 --option window.dimensions.lines=45"$'\t'"$HOME/.local/bin/tmux-dashboard"$'\t'"None XF86Launch1"$'\t'"30"
   "mail"$'\t'"--option window.dimensions.columns=155 --option window.dimensions.lines=45"$'\t'"aerc"$'\t'"$mod M"$'\t'""
   "music"$'\t'" "$'\t'"$HOME/.local/bin/fzmp"$'\t'"$mod P"$'\t'""
   "gopass"$'\t'" "$'\t'"$HOME/.local/bin/gcp"$'\t'"$mod S"$'\t'""
