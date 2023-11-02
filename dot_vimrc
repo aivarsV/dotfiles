@@ -35,6 +35,9 @@ Plugin 'tpope/vim-surround'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
 
+" fzf file and buffer picker
+Plugin 'https://github.com/junegunn/fzf.vim.git'
+
 " address book
 Plugin 'aivarsV/complete_email.vim'
 
