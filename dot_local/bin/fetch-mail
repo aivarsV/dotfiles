@@ -97,7 +97,7 @@ def syncMails():
 
     p = subprocess.run(["notmuch", "new"])
 
-    newMails = subprocess.run(["notmuch", "count", "tag:unread and tag:inbox"],
+    newMails = subprocess.run(["notmuch", "count", "--output=messages", "tag:unread and not tag:newsletters"],
                               encoding=sys.stdout.encoding,
                               capture_output=True).stdout.strip()
 
