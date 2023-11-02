@@ -20,7 +20,7 @@ then
   for dropdown in "${dropdowns[@]}"
   do
     IFS=$'\t' read -r title options cmd keybind tag <<< "$dropdown"
-    riverctl map normal $keybind spawn "'$PWD/$0' '$title'"
+    riverctl map normal $keybind spawn "'$0' '$title'"
   done
 else
   for dropdown in "${dropdowns[@]}"
