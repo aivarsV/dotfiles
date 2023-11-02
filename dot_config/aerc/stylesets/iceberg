@@ -13,6 +13,7 @@ default.fg=#c6c8d1
 *.selected.fg=#84a0c6
 
 tab.bg=#2e3244
+tab.reverse=false
 title.bold=true
 header.bold=false
 
@@ -23,6 +24,7 @@ header.bold=false
 *warning.bg=#e2a478
 
 statusline_default.bg=#2e3244
+statusline_default.reverse=false
 
 msglist_unread.bold=true
 msglist_unread.fg=#e2a478
