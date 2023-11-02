@@ -152,11 +152,12 @@ riverctl input pointer-2-10-TPPS/2_IBM_TrackPoint natural-scroll enabled
 riverctl input pointer-2-10-TPPS/2_IBM_TrackPoint pointer-accel 0.95
 
 # Make certain views start floating
-riverctl float-filter-add app-id float
-riverctl float-filter-add app-id "$dropdown_class"
-riverctl float-filter-add title "Firefox . Sharing Indicator"
-riverctl float-filter-add title "Password Required . Mozilla Firefox"
-riverctl float-filter-add app_id "eparaksts-chrome-extension"
+riverctl rule-add -app-id float float
+riverctl rule-add -app-id "$dropdown_class" float
+riverctl rule-add -title "* Sharing Indicator" float
+riverctl rule-add -title "Password Required *" float
+riverctl rule-add -app-id 'eparaksts-chrome-extension' float
+riverctl rule-add -app-id 'chrome-token-signing' float
 #riverctl float-filter-add title "popup title with spaces"
 
 # Set app-ids and titles of views which should use client side decorations
