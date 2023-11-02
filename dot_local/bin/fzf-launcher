@@ -1,5 +1,5 @@
 #!/bin/bash
-# Program launcher for sway
+# Program launcher for river
 # intended to run in terminal
 
 
@@ -11,11 +11,14 @@ list_tmux_sessions() {
   fi
   tmux ls -F 'tmux-session #S' 2>>/dev/null
 }
+
 list_options() {
   # executables, available from PATH
   echo -n "$PATH" | xargs -d : -I{} -r -- find -L {} -maxdepth 1 -mindepth 1 -type f -executable -printf "%f\n" | sort -u
   # tmux sessions
   list_tmux_sessions | sort -u
+  # QEMU virtual machines
+  virsh list --all --name | xargs echo vm_start_and_attach | sort -u
 }
 
 prompt_user() {
@@ -67,6 +70,12 @@ then
 EOL
   riverctl spawn "alacritty --option window.class.instance=$COMMAND -e $tmp_script"
 else
-  # graphical wayland app or xwayland app
-  riverctl spawn "$MATCH"
+  if [[ "$MATCH" == "vm_start_and_attach "* ]]
+  then
+    vm_name=${MATCH#* }
+    virsh start $vm_name && riverctl spawn "virt-viewer -f $vm_name"
+  else
+    # graphical wayland app or xwayland app
+    riverctl spawn "$MATCH"
+  fi
 fi
