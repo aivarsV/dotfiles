@@ -5,6 +5,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+[[ -f ~/.config/bash/functions ]] && . ~/.config/bash/functions
+
+
 
 GPG_TTY=`tty` gpg-connect-agent updatestartuptty /bye >> /dev/null
 

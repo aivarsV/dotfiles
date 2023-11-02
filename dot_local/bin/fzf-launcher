@@ -60,6 +60,7 @@ then
 
   cat >> $tmp_script << EOL
 #!$SHELL
+[[ -f ~/.config/bash/functions ]] && . ~/.config/bash/functions
     rm $tmp_script
     sleep 0.5
     $MATCH
