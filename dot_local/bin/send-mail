@@ -12,9 +12,11 @@ import smtplib
 import base64
 import xoauthHelper
 from os import path
+import json
 
 
 SIGNATURES_DIR = path.expanduser('~/.mail_signatures')
+ALIAS_FILE = path.expanduser('~/.mail/aliases')
 PLAINTEXT_ONLY = ["@todo.sr.ht", "@lists.sr.ht"]
 
 class SmtpCredentials:
@@ -43,9 +45,17 @@ def sendPlainOnly(*recipients):
         if any([host in r for host in PLAINTEXT_ONLY]):
             return True
 
+def lookupSenderAlias(sender):
+    with open(ALIAS_FILE) as f:
+        aliases = json.load(f)
+    while sender in aliases:
+        sender = aliases.get(sender)
+    return sender
+
+
 def compileMessage():
     msg = email.message_from_file(sys.stdin, policy=policy.default)
-    sender = re.search(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', 
+    sender = re.search(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
                         msg['From']).group(0)
     domain = sender.split('@')[-1]
 
@@ -110,7 +120,7 @@ def compileMessage():
                                      cid='<{}>'.format(r[1]),
                                      disposition='inline')
 
-    return (msg, sender)
+    return (msg, lookupSenderAlias(sender))
 
 
 def getCredentials(sender):
@@ -119,6 +129,11 @@ def getCredentials(sender):
                 capture_output=True, encoding=sys.stdin.encoding
                 ).stdout.split('\n')[0][:-len(' matches')]
 
+    if accountPath == '':
+        accountPath = subprocess.run(
+                    ['gopass', 'grep', 'smtp-Sender: ' + sender],
+                    capture_output=True, encoding=sys.stdin.encoding
+                    ).stdout.split('\n')[0][:-len(' matches')]
     credential_results = subprocess.run(
                 ['gopass', 'show', "-f", accountPath],
                 capture_output=True, encoding=sys.stdin.encoding
