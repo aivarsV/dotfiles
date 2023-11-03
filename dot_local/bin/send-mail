@@ -7,7 +7,7 @@ import re
 from uuid import uuid1
 import email
 from email import policy, message
-import imghdr
+import filetype
 import smtplib
 import base64
 import xoauthHelper
@@ -86,7 +86,7 @@ def compileMessage():
         with open(r[0], 'rb') as f:
             img_data = f.read()
         htmlMsg.add_related(img_data, maintype='image',
-                                 subtype=imghdr.what(None, img_data),
+                                 subtype=filetype.guess(img_data).mime.split('/')[-1],
                                  filename=os.path.basename(r[0]),
                                  cid='<{}>'.format(r[1]),
                                  disposition='inline')
