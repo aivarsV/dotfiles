@@ -15,6 +15,7 @@ from os import path
 
 
 SIGNATURES_DIR = path.expanduser('~/.mail_signatures')
+PLAINTEXT_ONLY = ["@todo.sr.ht", "@lists.sr.ht"]
 
 class SmtpCredentials:
     def __init__(self, passwd, args):
@@ -37,18 +38,25 @@ class SmtpCredentials:
             smtp.login(self._username, self._passwd)
 
 
+def sendPlainOnly(*recipients):
+    for r in recipients:
+        if any([host in r for host in PLAINTEXT_ONLY]):
+            return True
+
 def compileMessage():
     msg = email.message_from_file(sys.stdin, policy=policy.default)
     sender = re.search(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', 
                         msg['From']).group(0)
     domain = sender.split('@')[-1]
-    
-    plainMsg = msg.get_body()
-    if isinstance(plainMsg, message.EmailMessage):
-        markdown = plainMsg.get_payload()
-    else:
-        markdown = plainMsg
-        plainMsg = msg
+
+    # compiling git patches to html would produce unusable mess
+    plainOnly = msg.get("X-Mailer", "").startswith("git-send-email")
+    plainOnly = plainOnly or sendPlainOnly(msg.get("To", ""),
+                                            msg.get("Cc", ""),
+                                            msg.get("Bcc", ""))
+
+    plainMsg = msg.get_body(preferencelist=['related', 'plain'])
+    markdown = plainMsg.get_content()
 
     signatureFile = path.join(SIGNATURES_DIR, sender)
     if path.isfile(signatureFile):
@@ -71,33 +79,36 @@ def compileMessage():
         else:
             print('No such file:' + m.group(3))
 
-    html = subprocess.run(
-                ['pandoc', '--to', 'html', '-s', '--metadata', 'pagetitle=' + msg['Subject']],
-                input=substituted,
-                capture_output=True, encoding=sys.stdin.encoding
-            ).stdout.replace(extraSuffix, '')
+    if plainOnly:
+        plainMsg.set_content(substituted.replace(extraSuffix, ''))
+    else:
+        parent = msg
+        if plainMsg is not msg:
+            for m in msg.iter_parts():
+                if m.get_content_type() == "multipart/alternative":
+                    parent = m
+                if m is plainMsg:
+                    break
+
+        html = subprocess.run(
+                    ['pandoc', '--to', 'html', '-s', '--metadata', 'pagetitle=' + msg['Subject']],
+                    input=substituted,
+                    capture_output=True, encoding=sys.stdin.encoding
+                ).stdout.replace(extraSuffix, '')
 
 
-    plainMsg.set_content(substituted.replace(extraSuffix, ''))
-    plainMsg.add_alternative(html, subtype='html')
-    htmlMsg = plainMsg.get_payload()[1]
+        plainMsg.set_content(substituted.replace(extraSuffix, ''))
+        parent.add_alternative(html, subtype='html')
+        htmlMsg = parent.get_payload()[1]
 
-    for r in related:
-        with open(r[0], 'rb') as f:
-            img_data = f.read()
-        htmlMsg.add_related(img_data, maintype='image',
-                                 subtype=filetype.guess(img_data).mime.split('/')[-1],
-                                 filename=os.path.basename(r[0]),
-                                 cid='<{}>'.format(r[1]),
-                                 disposition='inline')
-
-    for a in msg.iter_attachments():
-        if a.get_content_maintype() == 'text':
-            if a['Content-Transfer-Encoding'] != 'base64':
-                a.set_content(a.get_payload(), 
-                        subtype=a.get_content_subtype(),
-                        filename=a.get_filename(),
-                        cte='base64')
+        for r in related:
+            with open(r[0], 'rb') as f:
+                img_data = f.read()
+            htmlMsg.add_related(img_data, maintype='image',
+                                     subtype=filetype.guess(img_data).mime.split('/')[-1],
+                                     filename=os.path.basename(r[0]),
+                                     cid='<{}>'.format(r[1]),
+                                     disposition='inline')
 
     return (msg, sender)
 
