@@ -45,7 +45,7 @@ alias river='QT_QPA_PLATFORM=wayland-egl \
   exec river'
 
 # For interaction with dotfiles repository
-alias dotfiles=GIT_DIR=$HOME/.dotfiles GIT_WORK_TREE=$HOME /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME
+alias dotfiles='GIT_DIR=$HOME/.dotfiles GIT_WORK_TREE=$HOME /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 
 
