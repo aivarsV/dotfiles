@@ -17,8 +17,10 @@ list_options() {
   echo -n "$PATH" | xargs -d : -I{} -r -- find -L {} -maxdepth 1 -mindepth 1 -type f -executable -printf "%f\n" | sort -u
   # tmux sessions
   list_tmux_sessions | sort -u
-  # QEMU virtual machines
+  # QEMU user session virtual machines
   virsh list --all --name | xargs echo vm_start_and_attach | sort -u
+  # QEMU system virtual machines
+  virsh -c "qemu:///system" list --all --name | xargs echo vm_start_and_attach_system | sort -u
 }
 
 prompt_user() {
@@ -73,7 +75,11 @@ else
   if [[ "$MATCH" == "vm_start_and_attach "* ]]
   then
     vm_name=${MATCH#* }
-    virsh start $vm_name && riverctl spawn "virt-viewer -f $vm_name"
+    virsh start $vm_name ; riverctl spawn "virt-viewer -f $vm_name"
+  elif [[ "$MATCH" == "vm_start_and_attach_system "* ]]
+  then
+    vm_name=${MATCH#* }
+    virsh -c 'qemu:///system' start $vm_name ; riverctl spawn "virt-viewer -c 'qemu:///system' -f $vm_name"
   else
     # graphical wayland app or xwayland app
     riverctl spawn "$MATCH"
