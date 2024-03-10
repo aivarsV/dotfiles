@@ -12,6 +12,8 @@ source "$(dirname "$0")/variables"
 
 riverctl set-cursor-warp on-output-change
 
+riverctl background-color 0x000000
+
 # Mod+Shift+Return to start an instance of foot (https://codeberg.org/dnkl/foot)
 riverctl map normal $mod+Shift Return spawn "$term"
 
