@@ -2,6 +2,5 @@
 
 # Use the "logo" key as the primary modifier
 mod="Mod4"
-term="alacritty --socket '${XDG_RUNTIME_DIR}/alacritty.sock' msg create-window"
-term="alacritty"
+term="footclient"
 dropdown_class=floating_term

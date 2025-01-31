@@ -21,7 +21,7 @@ riverctl map normal $mod+Shift Return spawn "$term"
 riverctl map normal $mod Q close
 
 # Mod+D open launcher
-riverctl map normal $mod D spawn "$term --title 'app launcher' --option window.dimensions.columns=60 --option window.dimensions.lines=20 --class '$dropdown_class' -e ~/.local/bin/fzf-launcher"
+riverctl map normal $mod D spawn "$term --title 'app launcher' --app-id '$dropdown_class' --window-size-chars=80x30 -o environment.TERMINAL=$term -o environment.SKIP_HIST=1 -e sway-launcher-desktop"
 
 # Fetch mail
 riverctl map normal $mod+Shift M spawn ~/.local/bin/fetch-mail
@@ -141,6 +141,14 @@ riverctl set-repeat 50 300
 # does not work without correct names
 riverctl input pointer-2-10-TPPS/2_IBM_TrackPoint natural-scroll enabled
 riverctl input pointer-2-10-TPPS/2_IBM_TrackPoint pointer-accel 0.95
+
+# Dropdown terminal instances
+riverctl map normal $mod T spawn "$term --title SHELL --app-id '$dropdown_class' -e tmux-start-or-attach shell"
+riverctl map normal None XF86Launch1 spawn "$term --title dashboard --app-id '$dropdown_class' --window-size-chars=155x45 -e tmux-start-or-attach dashboard"
+riverctl map normal $mod M spawn "$term --title mail --app-id '$dropdown_class' --window-size-chars=155x45 -e aerc"
+riverctl map normal $mod P spawn "$term --title music --app-id '$dropdown_class' -e $HOME/.local/bin/fzmp"
+riverctl map normal $mod S spawn "$term --title gopass --app-id '$dropdown_class' -e $HOME/.local/bin/gcp"
+riverctl map normal $mod O spawn "$term --title otp --app-id '$dropdown_class' -e $HOME/.local/bin/otp"
 
 # Make certain views start floating
 riverctl rule-add -app-id float float
