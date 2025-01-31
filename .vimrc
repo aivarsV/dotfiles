@@ -44,6 +44,9 @@ Plugin 'aivarsV/complete_email.vim'
 " spell check and LSP client
 Plugin 'dense-analysis/ale'
 
+" readline editing in command mode
+Plugin 'https://github.com/ryvnf/readline.vim.git'
+
 " all plugins must be defined before this
 call vundle#end()            " required
 filetype plugin indent on    " required
