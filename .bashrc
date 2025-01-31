@@ -40,7 +40,7 @@ alias river='QT_QPA_PLATFORM=wayland-egl \
   GDK_BACKEND=wayland \
   WALLPAPER_FILE=~/Attēli/wallpaper.png \
   BROWSER=firefox \
-  XKB_DEFAULT_LAYOUT="lv-custom" \
+  XKB_DEFAULT_LAYOUT="lv" \
   XKB_DEFAULT_OPTIONS="caps:escape" \
   exec river'
 
