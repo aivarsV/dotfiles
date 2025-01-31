@@ -3,8 +3,9 @@ Description=Show background image on wayland compositor
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/swww-daemon
-ExecStartPost=/usr/bin/swww img ${WALLPAPER_FILE}
+Environment="RUST_BACKTRACE=full"
+ExecStart=/usr/bin/swww-daemon --format xrgb
+#ExecStartPost=/usr/bin/swww img ${WALLPAPER_FILE}
 
 [Install]
 WantedBy=wayland-session.target
