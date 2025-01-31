@@ -173,6 +173,8 @@ dbus-update-activation-environment WAYLAND_DISPLAY
 systemctl --user import-environment
 systemctl --user restart wayland-session.target
 
+riverctl map normal None Super_L spawn 'pkill -SIGUSR1 yambar'
+riverctl map -release normal Super Super_L spawn 'pkill -SIGUSR2 yambar'
 
 # River will send the process group of the init executable SIGTERM on exit.
 riverctl spawn yambar

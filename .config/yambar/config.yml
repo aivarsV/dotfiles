@@ -62,10 +62,16 @@ anchors:
 
 bar:
   location: top
-  height: 20
+  layer: hidden
+  height: 22
   foreground: c6c8d1ff
-  background: 3d435c50
-  font: Hack:pixelsize=14
+  background: 1d1820c0
+  font: Hack:pixelsize=16
+  border:
+    width: 0
+    top-margin: 20
+    top-width: 15
+    bottom-width: 15
   left:
     - river:
         font: Hack:pixelsize=14:weight=bold
@@ -175,46 +181,52 @@ bar:
             <<: *background-inner
             text: ""
     - network:
-        name: enp0s25
         content:
           map:
+            default: {empty: {}}
             conditions:
-              carrier:
-                list:
-                  spacing: 0
-                  items:
-                    - string:
-                        <<: *base-middle
-                        text: ""
-                    - string:
-                        <<: *base-content
-                        text: " E:{state} "
-                    - string:
-                        <<: *base-edge
-                        text: ""
-              ~carrier: {empty: {}}
+              name == enp0s25:
+                map:
+                  conditions:
+                    carrier:
+                      list:
+                        spacing: 0
+                        items:
+                          - string:
+                              <<: *base-middle
+                              text: ""
+                          - string:
+                              <<: *base-content
+                              text: " E:{state} "
+                          - string:
+                              <<: *base-edge
+                              text: ""
+                    ~carrier: {empty: {}}
     - network:
-        name: wlp3s0
         content:
           map:
+            default: {empty: {}}
             conditions:
-              carrier:
-                list:
-                  spacing: 0
-                  items:
-                    - string:
-                        <<: *base-middle
-                        text: ""
-                    - string:
-                        <<: *base-content
-                        text: " {ssid},{signal}dBm "
-                    - string:
-                        <<: *base-edge
-                        text: ""
-              ~carrier: {empty: {}}
+              name == wlp3s0:
+                map:
+                  conditions:
+                    carrier:
+                      list:
+                        spacing: 0
+                        items:
+                          - string:
+                              <<: *base-middle
+                              text: ""
+                          - string:
+                              <<: *base-content
+                              text: " {ssid},{signal}dBm "
+                          - string:
+                              <<: *base-edge
+                              text: ""
+                    ~carrier: {empty: {}}
     - battery:
         name: BAT0
-        poll-interval: 15
+        poll-interval: 1500
         content:
           map:
             conditions:
