@@ -178,7 +178,6 @@ riverctl map -release normal Super Super_L spawn 'pkill -SIGUSR2 yambar'
 
 # River will send the process group of the init executable SIGTERM on exit.
 riverctl spawn yambar
-riverctl default-layout river-default
-riverctl spawn "$(dirname $0)/dropdown_term"
+riverctl default-layout kile
 # default fibionacci-split layout
-exec kile -n river-default -l "((v : h (h : v (v : h h))) 1 0.5 0)"
+exec kile
