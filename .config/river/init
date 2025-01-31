@@ -108,7 +108,7 @@ riverctl map normal $mod Space toggle-float
 riverctl map normal $mod F toggle-fullscreen
 
 # take a screenshot
-riverctl map -release normal None Print spawn 'grim -g "$(slurp)" - | wl-copy'
+riverctl map -release normal $mod Print spawn 'grim -g "$(slurp)" - | wl-copy'
 # Various media key mapping examples for both normal and locked mode which do
 # not have a modifier
 for mode in normal locked
