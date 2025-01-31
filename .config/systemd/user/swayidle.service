@@ -3,8 +3,7 @@ Description=Lock and dim screen after idle period
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/swayidle -d -w timeout 600 "~/.local/bin/screen-ctrl lock" \
-                            timeout 630 'wlopm --off "*"' \
+ExecStart=/usr/bin/swayidle -d -w \
                             timeout 30 'if pgrep -x swaylock ; then wlopm --off "*"; fi' \
                             resume 'wlopm --on "*"' \
                             after-resume "mpc pause" \
